@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a511e6e63703b462cb2cd34d65621124, type: 3}
+  m_Name: RustyDagger
+  m_EditorClassIdentifier: 
+  type: weapon
+  displayType: Dagger
+  sellback: 100
+  displayName: Rusty Daggers
+  level: 1
+  description: These are a pair of rusty daggers. Or are they the unwashed kitchen
+    utensils of a giant? Who knows, but they're pretty stabby.
+  equipType: weapon
+  stats:
+  - name: power
+    value: 2
+  - name: immunity
+    value: 0
+  - name: endurance
+    value: 1
+  - name: wisdom
+    value: 0
+  - name: luck
+    value: 0
+  - name: recovery
+    value: 0
+  resistances:
+  - name: fire
+    value: 0
+  - name: water
+    value: 1
+  - name: darkness
+    value: 0
+  - name: light
+    value: 0
+  - name: wind
+    value: 0
+  - name: stone
+    value: 0
+  - name: ice
+    value: 0
+  - name: nature
+    value: 0
+  - name: metal
+    value: 3
+  minimum: 7
+  maximum: 15
+  dual: 1
+  path: Prefabs/trash_dagger
+  rotation: 100
+  element: metal
