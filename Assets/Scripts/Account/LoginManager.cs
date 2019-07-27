@@ -21,6 +21,8 @@ public class LoginManager : MonoBehaviour
 
     public GameObject tosAccepted;
 
+    public GameObject submitButton;
+
     bool logginIn;
     bool registering;
 
@@ -59,6 +61,9 @@ public class LoginManager : MonoBehaviour
 
     public void login()
     {
+        errorDisplay.GetComponent<Text>().text = "";
+        loadingIndicator.SetActive(true);
+        submitButton.GetComponent<Button>().interactable = false;
         username = usernameInput.GetComponent<InputField>().text;
         password = passwordInput.GetComponent<InputField>().text;
 
@@ -74,6 +79,7 @@ public class LoginManager : MonoBehaviour
 
     public void register()
     {
+        submitButton.GetComponent<Button>().interactable = false;
         username = usernameInput.GetComponent<InputField>().text;
         password = passwordInput.GetComponent<InputField>().text;
         if (username.Contains("@"))
@@ -99,16 +105,19 @@ public class LoginManager : MonoBehaviour
                 else
                 {
                     errorDisplay.GetComponent<Text>().text = "You must accept the terms of service.";
+                    submitButton.GetComponent<Button>().interactable = true;
                 }
             }
             else
             {
                 errorDisplay.GetComponent<Text>().text = "Your password must be 6 characters or more!";
+                submitButton.GetComponent<Button>().interactable = true;
             }
         }
         else
         {
             errorDisplay.GetComponent<Text>().text = "Invalid email.";
+            submitButton.GetComponent<Button>().interactable = true;
         }
     }
 
@@ -141,12 +150,14 @@ public class LoginManager : MonoBehaviour
         else
         {
             errorDisplay.GetComponent<Text>().text = errors[resp.failCode];
+            submitButton.GetComponent<Button>().interactable = true;
         }
     }
 
     IEnumerator waitToLogin(float delay)
     {
         yield return new WaitForSeconds(delay);
+        submitButton.GetComponent<Button>().interactable = true;
         SceneManager.LoadScene("Login");
     }
 
@@ -164,11 +175,13 @@ public class LoginManager : MonoBehaviour
             PlayerPrefs.SetString("playerName", resp.characterName);
             PlayerPrefs.SetString("playerID", "#" + resp.playerID.ToString().PadLeft(6, '0'));
             PlayerPrefs.SetString("playerStats", resp.stats);
+            submitButton.GetComponent<Button>().interactable = true;
             SceneManager.LoadScene("oaklore_center");
         }
         else
         {
             errorDisplay.GetComponent<Text>().text = errors[resp.failCode];
+            submitButton.GetComponent<Button>().interactable = true;
             yield break;
         }
 

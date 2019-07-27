@@ -690,6 +690,7 @@ MonoBehaviour:
   errorDisplay: {fileID: 1233054133}
   loadingIndicator: {fileID: 1453435666}
   tosAccepted: {fileID: 225010377}
+  submitButton: {fileID: 849959517}
 --- !u!4 &577419343
 Transform:
   m_ObjectHideFlags: 0
