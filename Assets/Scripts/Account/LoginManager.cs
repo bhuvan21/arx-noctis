@@ -3,38 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using System;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using UnityEngine.SceneManagement;
 using AssemblyCSharp.Assets.Scripts.Medo.Security;
 using AssemblyCSharp.Assets.Scripts.Medo.Security.Cryptography;
-using System.Net.Mail.MailAddress;
-
-public class LoginManager : MonoBehaviour
-{
-
-    public GameObject usernameInput;
-    public GameObject passwordInput;
-    public GameObject characNameInput;
-
-    public GameObject errorDisplay;
-
-    public GameObject tosAccepted;
-
-    Dictionary<string, string> errors = new Dictionary<string, string>() { { "0", "Invalid credentials" }, { "1", "You need to verify your account! Check email." }, { "2", "An account with this email adress already exists."} };
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+using System.Net.Mail;
 
 
 public class LoginManager : MonoBehaviour
@@ -99,7 +75,7 @@ public class LoginManager : MonoBehaviour
         var thread = new Thread(
             () =>
             {
-                value = Encoding.UTF8.GetString(PBKDF2(password, Encoding.UTF8.GetBytes("thisisepic"), 64000, 18));
+                value = Encoding.UTF8.GetString(PBKDF2(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes("thisisepic"), 64000, 18));
             });
         thread.Start();
         logginIn = true;
@@ -128,7 +104,7 @@ public class LoginManager : MonoBehaviour
                     var thread = new Thread(
                         () =>
                         {
-                            value = Encoding.UTF8.GetString(PBKDF2(password, Encoding.UTF8.GetBytes("thisisepic"), 64000, 18));
+                            value = Encoding.UTF8.GetString(PBKDF2(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes("thisisepic"), 64000, 18));
                         });
                     thread.Start();
                 }
