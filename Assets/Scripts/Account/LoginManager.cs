@@ -1,13 +1,41 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Security.Cryptography;
 using System.Text;
-using UnityEngine.SceneManagement;
 using System.Threading;
+using UnityEngine.SceneManagement;
+using AssemblyCSharp.Assets.Scripts.Medo.Security;
 using AssemblyCSharp.Assets.Scripts.Medo.Security.Cryptography;
+using System.Net.Mail.MailAddress;
+
+public class LoginManager : MonoBehaviour
+{
+
+    public GameObject usernameInput;
+    public GameObject passwordInput;
+    public GameObject characNameInput;
+
+    public GameObject errorDisplay;
+
+    public GameObject tosAccepted;
+
+    Dictionary<string, string> errors = new Dictionary<string, string>() { { "0", "Invalid credentials" }, { "1", "You need to verify your account! Check email." }, { "2", "An account with this email adress already exists."} };
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
 
 public class LoginManager : MonoBehaviour
 {
@@ -75,14 +103,16 @@ public class LoginManager : MonoBehaviour
             });
         thread.Start();
         logginIn = true;
+
     }
 
     public void register()
     {
+
         submitButton.GetComponent<Button>().interactable = false;
         username = usernameInput.GetComponent<InputField>().text;
         password = passwordInput.GetComponent<InputField>().text;
-        if (username.Contains("@"))
+        if (isEmailValid(username))
         {
             if (password.Length >= 6)
             {
@@ -187,11 +217,24 @@ public class LoginManager : MonoBehaviour
 
     }
 
-    byte[] PBKDF2(string password, byte[] salt, int iterations, int outputBytes)
+    public bool isEmailValid(string emailaddress)
+    {
+        try
+        {
+            MailAddress m = new MailAddress(emailaddress);
+            return true;
+        }
+        catch (FormatException)
+        {
+            return false;
+        }
+    }
+
+    byte[] PBKDF2(byte[] password, byte[] salt, int iterations, int outputBytes)
     {
 
         using (var hmac = new HMACSHA256()) {
-            var df = new Pbkdf2(hmac, Encoding.UTF8.GetBytes(password), salt, iterations);
+            var df = new Pbkdf2(hmac, password, salt, iterations);
             var bytes = df.GetBytes(outputBytes);
             return bytes;
         }
