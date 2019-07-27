@@ -9,18 +9,24 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/oaklore_center.unity
+    path: Assets/Scenes/Login.unity
+    guid: 5382cfbe06e7a48a982859abd19755e6
+  - enabled: 1
+    path: Assets/Scenes/oaklore_center.unity
     guid: 1a862ff068ac74ce7acdc3cf807ad599
   - enabled: 1
-    path: Assets/oaklore_keep.unity
+    path: Assets/Scenes/oaklore_keep.unity
     guid: 36645a4975e794fd1affa26f1208bbff
   - enabled: 1
-    path: Assets/battleground.unity
+    path: Assets/Scenes/battleground.unity
     guid: 1f4146ef617c84b5aa7d17f0b3788151
   - enabled: 1
-    path: Assets/npctest.unity
+    path: Assets/Scenes/npctest.unity
     guid: f154b105a4877439d848a7d768370296
   - enabled: 1
-    path: Assets/testquest.unity
+    path: Assets/Scenes/testquest.unity
     guid: 61acd2d86f5604d1ea2ac1b02d1603b1
+  - enabled: 1
+    path: Assets/Scenes/CreateAccount.unity
+    guid: 0cf602769d7a340e69caaa77ccbaf5db
   m_configObjects: {}
