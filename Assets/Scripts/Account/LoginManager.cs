@@ -38,7 +38,7 @@ public class LoginManager : MonoBehaviour
     {
         string username = usernameInput.GetComponent<InputField>().text;
         string password = passwordInput.GetComponent<InputField>().text;
-        string hash = Encoding.UTF8.GetString(PBKDF2(password, Encoding.UTF8.GetBytes("thisisepic"), 64000, 18));
+        string hash = Encoding.UTF8.GetString(PBKDF2(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes("thisisepic"), 64000, 18));
         
         StartCoroutine(loginCoroutine(username, hash));
     }
@@ -48,7 +48,7 @@ public class LoginManager : MonoBehaviour
         string username = usernameInput.GetComponent<InputField>().text;
         string password = passwordInput.GetComponent<InputField>().text;
         string characterName = characNameInput.GetComponent<InputField>().text;
-        string hash = Encoding.UTF8.GetString(PBKDF2(password, Encoding.UTF8.GetBytes("thisisepic"), 64000, 18));
+        string hash = Encoding.UTF8.GetString(PBKDF2(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes("thisisepic"), 64000, 18));
         if (username.Contains("@"))
         {
             if (password.Length >= 6)
@@ -130,11 +130,11 @@ public class LoginManager : MonoBehaviour
 
     }
 
-    byte[] PBKDF2(string password, byte[] salt, int iterations, int outputBytes)
+    byte[] PBKDF2(byte[] password, byte[] salt, int iterations, int outputBytes)
     {
 
         using (var hmac = new HMACSHA256()) {
-            var df = new Pbkdf2(hmac, Encoding.UTF8.GetBytes(password), salt, iterations);
+            var df = new Pbkdf2(hmac, password, salt, iterations);
             var bytes = df.GetBytes(outputBytes);
             return bytes;
         }
