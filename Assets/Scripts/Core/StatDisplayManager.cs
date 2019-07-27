@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/* Manages the stat display HUD */
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -100,7 +101,7 @@ public class StatDisplayManager : MonoBehaviour
         CRIT.GetComponent<Text>().text = "CRIT\n" + (this.gameObject.GetComponent<InventoryManager>().getStat("luck") / 200.0f * 40.0f).ToString() + "%";
 
         RESIST.GetComponent<Text>().text = "";
-        foreach(Armour.Resistance res in this.gameObject.GetComponent<CharacterMovementController>().resistances)
+        foreach(Armour.Resistance res in this.gameObject.GetComponent<CoreCharacterController>().resistances)
         {
             RESIST.GetComponent<Text>().text += res.name + " " + res.value.ToString() + "\n";
         }

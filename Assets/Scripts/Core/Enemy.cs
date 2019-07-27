@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/* Does all the enemy stuff - battling basicly*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;

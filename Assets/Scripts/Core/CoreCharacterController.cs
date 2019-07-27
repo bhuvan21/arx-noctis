@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/*Manages the player's click and move controls, and attacking*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,7 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public class CharacterMovementController : MonoBehaviour
+public class CoreCharacterController : MonoBehaviour
 {
     public bool canMove = true;
     bool unstickMovement = true;
@@ -57,7 +58,7 @@ public class CharacterMovementController : MonoBehaviour
         new Armour.Resistance("metal", 0),
     };
 
-    private static CharacterMovementController playerInstance;
+    private static CoreCharacterController playerInstance;
 
     string enemyName;
     string enemyID;
@@ -68,14 +69,12 @@ public class CharacterMovementController : MonoBehaviour
 
     Vector3 oldScale;
 
-    
-
     private void Start()
-    {
-        
+    {   
         currentClass = (BattleClass)Resources.Load("Ruffian");
     }
 
+    // prevents duplicates of the player
     void Awake()
     {
         DontDestroyOnLoad(this);
@@ -89,6 +88,7 @@ public class CharacterMovementController : MonoBehaviour
         }
     }
 
+    // get user input and a little other stuff
     void Update()
     {
         if (inBattle == false)
@@ -119,6 +119,7 @@ public class CharacterMovementController : MonoBehaviour
         movingTo = transform.position;
     }
 
+    // small battle funcs - keeps it flowing
     public void MoveToAttack()
     {
         battleMovingFrom = GameObject.Find("PlayerSpot").transform.position;
@@ -156,12 +157,13 @@ public class CharacterMovementController : MonoBehaviour
         battleManager.PlayerDidHit();
     }
 
+    // battle logic and movement
     void FixedUpdate()
     {
         mouseDownDispatched = true;
+        // BATTLE LOGIC
         if (inBattle)
         {
-            // BATTLE LOGIC
             if (movingToAttack)
             {
                 if (battleMovePercentage >= 1)
@@ -208,6 +210,7 @@ public class CharacterMovementController : MonoBehaviour
             }
         }
 
+        // i have no idea what this does but it's movement related
         if (mouseDown && canMove && !EventSystem.current.IsPointerOverGameObject())
         {
             unstickMovement = true;
@@ -243,6 +246,7 @@ public class CharacterMovementController : MonoBehaviour
         }
     }
 
+    // handles the player hitting nps/location swaps
     void OnTriggerEnter2D(Collider2D col)
     {
         if (exitingBattle && col.gameObject.GetComponent<Enemy>() != null)
@@ -297,6 +301,7 @@ public class CharacterMovementController : MonoBehaviour
         movingFrom = transform.position;
     }
 
+    // small things
     private void OnCollisionEnter2D(Collision2D collision)
     {
         movePercentage = 1;

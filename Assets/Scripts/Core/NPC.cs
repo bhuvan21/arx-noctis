@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/* Manages NPC interactions - reads convos from an xml*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Xml;
@@ -153,17 +154,17 @@ public class NPC : MonoBehaviour
 
     void exitNPC()
     {
-        player.GetComponent<CharacterMovementController>().canMove = true;
+        player.GetComponent<CoreCharacterController>().canMove = true;
         player.transform.position = new Vector3(0, 10, 1);
     }
 
     void enterQuest(XmlNode node)
     {
         Quest quest = (Quest)Resources.Load(node.Attributes[1].Value);
-        player.GetComponent<CharacterMovementController>().currentQuest = quest;
+        player.GetComponent<CoreCharacterController>().currentQuest = quest;
         player.transform.position = quest.entryPoint;
         player.transform.localScale = quest.entryScale;
-        player.GetComponent<CharacterMovementController>().canMove = true;
+        player.GetComponent<CoreCharacterController>().canMove = true;
         SceneManager.LoadScene(quest.sceneName);
     }
 

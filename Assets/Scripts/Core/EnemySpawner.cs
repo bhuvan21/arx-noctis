@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/*Spawns enemies in quests*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,12 +10,6 @@ public class EnemySpawner : MonoBehaviour
     List<GameObject> mine = new List<GameObject>();
 
     private static EnemySpawner spawnerInstance;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
 
     private void Awake()
     {
@@ -41,11 +36,8 @@ public class EnemySpawner : MonoBehaviour
             }
         }
 
-
-
         for (int i = 0; i < placeholders.Length; i++)
         {
-
             if (!places.Contains(placeholders[i].name))
             {
 
@@ -57,8 +49,6 @@ public class EnemySpawner : MonoBehaviour
                 enemy.transform.localScale = Vector3.Scale(enemy.transform.localScale, placeholders[i].transform.localScale);
                 mine.Add(enemy);
             }
-
-
             else if (destroyed[i] == false)
             {
                 if (!(placeholders.Length == mine.Count))
@@ -69,19 +59,8 @@ public class EnemySpawner : MonoBehaviour
                     enemy.transform.localScale = Vector3.Scale(enemy.transform.localScale, placeholders[i].transform.localScale);
                     mine.Add(enemy);
                 }
-
             }
-
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-
-        
-
     }
 
     public void DestroyEnemy(string p)

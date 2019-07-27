@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿/* Where the management of the battle happens*/
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +10,7 @@ public class BattleManager : MonoBehaviour
     public GameObject player;
     public GameObject enemy;
 
+    // This was the easiest way to do this (M = minus)
     List<GameObject> attackButtons = new List<GameObject>();
     public GameObject buttonAttack0;
     public GameObject buttonAttackM1;
@@ -36,6 +39,7 @@ public class BattleManager : MonoBehaviour
     public GameObject enemyManaBar;
     public GameObject enemyName;
 
+    // the damage indicators
     GameObject playerDamage;
     GameObject enemyDamage;
 
@@ -44,18 +48,7 @@ public class BattleManager : MonoBehaviour
 
     Vector3 oldScale;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    // reset all the cooldowns
     void CleanUp()
     {
         for (int i = 0; i < cooldowns.Length; i++)
@@ -64,6 +57,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    // easy way to show and hide
     void hackyShow(GameObject obj)
     {
         Vector3 copy = obj.transform.position;
@@ -80,6 +74,7 @@ public class BattleManager : MonoBehaviour
 
     public void StartBattle()
     {
+        // get the display bars and show them
         playerHealthBar = GameObject.Find("Healthbar");
         playerManaBar = GameObject.Find("Manabar");
         enemyHealthBar = GameObject.Find("Healthbar2");
@@ -88,6 +83,8 @@ public class BattleManager : MonoBehaviour
         hackyShow(enemyHealthBar);
         hackyShow(enemyManaBar);
         hackyShow(enemyName);
+
+        // show the enemy's name
         enemyName.GetComponent<Text>().text = enemy.GetComponent<Enemy>().displayName;
 
         attackButtons.Add(buttonAttackM7);
@@ -106,15 +103,15 @@ public class BattleManager : MonoBehaviour
         attackButtons.Add(buttonAttack6);
         attackButtons.Add(buttonAttack7);
 
-
-
         UpdatePointBars();
         enemy.GetComponent<Enemy>().battleManager = this;
         enemy.GetComponent<Enemy>().inBattle = true;
 
         oldScale = player.transform.localScale;
         player.transform.localScale = new Vector3(1, 1, 1);
-        BattleClass playerClass = player.GetComponent<CharacterMovementController>().currentClass;
+        BattleClass playerClass = player.GetComponent<CoreCharacterController>().currentClass;
+
+        // update the attack buttons for the player's class
         for (int i = 0; i < attackButtons.Count; i++)
         {
             GameObject button = attackButtons[i];
@@ -125,6 +122,8 @@ public class BattleManager : MonoBehaviour
             button.gameObject.transform.Find("Mana").gameObject.SetActive(false);
             button.gameObject.transform.Find("Cooldown").gameObject.SetActive(false);
         }
+
+        // make the buttons actually work, and have them appear right for cooldowns etc
         for (int i = 0; i < playerClass.attacks.Length; i++)
         {
             if (playerClass.attacks[i].placement != 0)
@@ -139,7 +138,6 @@ public class BattleManager : MonoBehaviour
                 text.SetActive(true);
                 button.gameObject.transform.Find("Mana").gameObject.SetActive(true);
                 button.gameObject.transform.Find("Mana").GetComponent<Text>().text = playerClass.attacks[i].mana.ToString();
-                //button.GetComponent<Button>().AddListener(() => ButtonHighlighted(button, playerClass.attacks[i]));
                 button.GetComponent<AttackButtonPreview>().attackName = playerClass.attacks[i].name;
                 button.GetComponent<AttackButtonPreview>().attackDesc = playerClass.attacks[i].desc;
                 if (playerClass.attacks[i].startingCooldown > 0)
@@ -170,9 +168,10 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    // the small funcs that let battle flow
     public void PlayerMovedToAttack()
     {
-        player.GetComponent<CharacterMovementController>().AnimateAttack(playerAttack.animName);
+        player.GetComponent<CoreCharacterController>().AnimateAttack(playerAttack.animName);
     }
 
     public void PlayerMovedFromAttack()
@@ -195,6 +194,8 @@ public class BattleManager : MonoBehaviour
         enemy.GetComponent<Enemy>().AnimateAttack(0);
     }
 
+    // run at the end of each turn
+    // cooldowns updated etc.
     public void EnemyMovedFromAttack()
     {
         for (int i = 0; i < cooldowns.Length; i++)
@@ -238,39 +239,9 @@ public class BattleManager : MonoBehaviour
         ShowButtons();
     }
 
-    public void ButtonAttack0Pressed()
-    {
-        Attack[] attacks = player.GetComponent<CharacterMovementController>().currentClass.attacks;
-        HideButtons();
-        for (int i = 0; i < attacks.Length; i++)
-        {
-            Attack attack = attacks[i]; ;
-            if (attack.placement == 0)
-            {
-                playerAttack = attack;
-            }
-        }
-        player.GetComponent<CharacterMovementController>().MoveToAttack();
-    }
-
-    public void ButtonAttackM1Pressed()
-    {
-        Attack[] attacks = player.GetComponent<CharacterMovementController>().currentClass.attacks;
-        HideButtons();
-        for (int i = 0; i < attacks.Length; i++)
-        {
-            Attack attack = attacks[i]; ;
-            if (attack.placement == -1)
-            {
-                playerAttack = attack;
-            }
-        }
-        player.GetComponent<CharacterMovementController>().MoveToAttack();
-    }
-
     public void ButtonAttackPressed(int attackPlacement)
     {
-        Attack[] attacks = player.GetComponent<CharacterMovementController>().currentClass.attacks;
+        Attack[] attacks = player.GetComponent<CoreCharacterController>().currentClass.attacks;
 
         for (int i = 0; i < attacks.Length; i++)
         {
@@ -283,18 +254,17 @@ public class BattleManager : MonoBehaviour
                     playerAttack = attack;
                     player.GetComponent<InventoryManager>().currentMana -= attack.mana;
                     UpdatePointBars();
-                    player.GetComponent<CharacterMovementController>().MoveToAttack();
+                    player.GetComponent<CoreCharacterController>().MoveToAttack();
                 }
             }
         }
     }
 
-
-
+    // where the player damage happens
     public void PlayerDidHit()
     {
         // Use weapon to get random base damage
-        int max = player.GetComponent<CharacterMovementController>().statMaximum;
+        int max = player.GetComponent<CoreCharacterController>().statMaximum;
         Weapon weapon = player.GetComponent<InventoryManager>().currentWeapon;
         int baseDamage = Random.Range(weapon.minimum, weapon.maximum + 1);
         float modified = baseDamage * playerAttack.multiplier;
@@ -349,17 +319,17 @@ public class BattleManager : MonoBehaviour
             hackyHide(enemyHealthBar);
             hackyHide(enemyManaBar);
             hackyHide(enemyName);
-            //player.transform.localScale = oldScale;
         }
         UpdatePointBars();
     }
 
+    // where the enemy damage happens (for now) TODO make player and enemy damage the same
     public void EnemyDidHit()
     {
         Weapon weapon = enemy.GetComponent<Enemy>().currentWeapon;
         int baseDamage = Random.Range(weapon.minimum, weapon.maximum + 1);
         float modified = baseDamage * enemyAttack.multiplier;
-        foreach (Armour.Resistance resist in player.GetComponent<CharacterMovementController>().resistances)
+        foreach (Armour.Resistance resist in player.GetComponent<CoreCharacterController>().resistances)
         {
             if (resist.name == enemy.GetComponent<Enemy>().currentWeapon.element && resist.value != 0)
             {
@@ -384,12 +354,13 @@ public class BattleManager : MonoBehaviour
     {
         string placeID = enemy.GetComponent<Enemy>().placeholderID;
         Destroy(enemy);
-        player.GetComponent<CharacterMovementController>().inBattle = false;
-        player.GetComponent<CharacterMovementController>().EndBattle(placeID);
+        player.GetComponent<CoreCharacterController>().inBattle = false;
+        player.GetComponent<CoreCharacterController>().EndBattle(placeID);
         CleanUp();
         enemy = null;
     }
 
+    // update the indicators
     void UpdatePointBars()
     {
         float current = player.GetComponent<InventoryManager>().currentHealth;

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/* Manages the inventory, and also stats for some reason*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;

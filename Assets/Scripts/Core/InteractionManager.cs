@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/*Data holder for interactions*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
