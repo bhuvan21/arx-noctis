@@ -45,22 +45,7 @@ public class LoginManager : MonoBehaviour
     // this is all done in states now, so that 
     void Update()
     {
-        if (logginIn)
-        {
-            if (value != null)
-            {
-                logginIn = false;
-                StartCoroutine(loginCoroutine(username, value));
-            }
-        }
-        else if (registering)
-        {
-            if (value != null)
-            {
-                registering = false;
-                StartCoroutine(registerCoroutine(username, value, characterName));
-            }
-        }
+
     }
 
     public void login()
@@ -71,16 +56,9 @@ public class LoginManager : MonoBehaviour
         username = usernameInput.GetComponent<InputField>().text;
         password = passwordInput.GetComponent<InputField>().text;
 
-        value = null;
-        var thread = new Thread(
-            () =>
-            {
-                value = Encoding.UTF8.GetString(PBKDF2(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes("thisisepic"), 64000, 18));
-            });
-        thread.Start();
-        logginIn = true;
-
-    }
+		value = Encoding.UTF8.GetString(PBKDF2(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes("thisisepic"), 64000, 18));
+		StartCoroutine(loginCoroutine(username, value));
+	}
 
     public void register()
     {
@@ -100,14 +78,9 @@ public class LoginManager : MonoBehaviour
                     username = usernameInput.GetComponent<InputField>().text;
                     password = passwordInput.GetComponent<InputField>().text;
                     characterName = characNameInput.GetComponent<InputField>().text;
-                    value = null;
-                    var thread = new Thread(
-                        () =>
-                        {
-                            value = Encoding.UTF8.GetString(PBKDF2(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes("thisisepic"), 64000, 18));
-                        });
-                    thread.Start();
-                }
+                    value = Encoding.UTF8.GetString(PBKDF2(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes("thisisepic"), 64000, 18));
+					StartCoroutine(registerCoroutine(username, value, characterName));
+				}
                 else
                 {
                     errorDisplay.GetComponent<Text>().text = "You must accept the terms of service.";
