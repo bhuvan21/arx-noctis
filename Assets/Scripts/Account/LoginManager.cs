@@ -8,6 +8,7 @@ using System.Text;
 using UnityEngine.SceneManagement;
 using AssemblyCSharp.Assets.Scripts.Medo.Security;
 using AssemblyCSharp.Assets.Scripts.Medo.Security.Cryptography;
+using System.Net.Mail.MailAddress;
 
 public class LoginManager : MonoBehaviour
 {
@@ -49,7 +50,7 @@ public class LoginManager : MonoBehaviour
         string password = passwordInput.GetComponent<InputField>().text;
         string characterName = characNameInput.GetComponent<InputField>().text;
         string hash = Encoding.UTF8.GetString(PBKDF2(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes("thisisepic"), 64000, 18));
-        if (username.Contains("@"))
+        if (isEmailValid(username))
         {
             if (password.Length >= 6)
             {
@@ -128,6 +129,19 @@ public class LoginManager : MonoBehaviour
             errorDisplay.GetComponent<Text>().text = errors[resp.failCode];
         }
 
+    }
+
+    public bool isEmailValid(string emailaddress)
+    {
+        try
+        {
+            MailAddress m = new MailAddress(emailaddress);
+            return true;
+        }
+        catch (FormatException)
+        {
+            return false;
+        }
     }
 
     byte[] PBKDF2(byte[] password, byte[] salt, int iterations, int outputBytes)
