@@ -31,7 +31,7 @@ public class LoginManager : MonoBehaviour
     string characterName;
     string value;
 
-    Dictionary<string, string> errors = new Dictionary<string, string>() { { "0", "Invalid credentials" }, { "1", "You need to verify your account! Check email." }, { "2", "An account with this email adress already exists."} };
+    Dictionary<string, string> errors = new Dictionary<string, string>() { { "0", "Invalid credentials" }, { "1", "You need to verify your account! Check email." }, { "2", "An account with this email adress already exists."}, { "3", "An account with this character name already exists." } };
 
     void Start()
     {
