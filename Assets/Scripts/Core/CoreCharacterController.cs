@@ -376,4 +376,12 @@ public class CoreCharacterController : MonoBehaviour
         inBattle = true;
     }
 
+    private void OnLevelWasLoaded(int level)
+    {
+        if (this.gameObject.GetComponent<StatDisplayManager>() != null)
+        {
+            this.gameObject.GetComponent<StatDisplayManager>().startUpdate();
+        } 
+    }
+
 }

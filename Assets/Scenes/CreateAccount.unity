@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 120331135}
   m_Layer: 5
   m_Name: PasswordInput
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -277,7 +277,7 @@ GameObject:
   - component: {fileID: 225010379}
   m_Layer: 5
   m_Name: Toggle
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -365,7 +365,7 @@ GameObject:
   - component: {fileID: 268754456}
   m_Layer: 5
   m_Name: Placeholder
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -445,7 +445,7 @@ GameObject:
   - component: {fileID: 330303903}
   m_Layer: 5
   m_Name: CharacterName
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -589,7 +589,7 @@ GameObject:
   - component: {fileID: 419367938}
   m_Layer: 5
   m_Name: Text
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -667,7 +667,7 @@ GameObject:
   - component: {fileID: 577419342}
   m_Layer: 0
   m_Name: LoginManager
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -719,7 +719,7 @@ GameObject:
   - component: {fileID: 849959519}
   m_Layer: 5
   m_Name: Submit
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -851,7 +851,7 @@ GameObject:
   - component: {fileID: 887174972}
   m_Layer: 5
   m_Name: Background
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -927,7 +927,7 @@ GameObject:
   - component: {fileID: 890783204}
   m_Layer: 5
   m_Name: Text
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1020,7 +1020,7 @@ GameObject:
   - component: {fileID: 909874539}
   m_Layer: 5
   m_Name: Label
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1257,7 +1257,7 @@ GameObject:
   - component: {fileID: 1026754540}
   m_Layer: 5
   m_Name: Placeholder
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1337,7 +1337,7 @@ GameObject:
   - component: {fileID: 1119157464}
   m_Layer: 5
   m_Name: Back
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1469,7 +1469,7 @@ GameObject:
   - component: {fileID: 1233054134}
   m_Layer: 5
   m_Name: Error
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1548,7 +1548,7 @@ GameObject:
   - component: {fileID: 1255678933}
   m_Layer: 0
   m_Name: EventSystem
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1614,7 +1614,7 @@ GameObject:
   - component: {fileID: 1397302729}
   m_Layer: 5
   m_Name: Text
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1694,7 +1694,7 @@ GameObject:
   - component: {fileID: 1453435668}
   m_Layer: 5
   m_Name: Text
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1786,7 +1786,7 @@ GameObject:
   - component: {fileID: 1550112145}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1892,7 +1892,7 @@ GameObject:
   - component: {fileID: 1640170455}
   m_Layer: 5
   m_Name: Text
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1971,7 +1971,7 @@ GameObject:
   - component: {fileID: 1841756702}
   m_Layer: 5
   m_Name: Text
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2050,7 +2050,7 @@ GameObject:
   - component: {fileID: 1865833130}
   m_Layer: 5
   m_Name: Placeholder
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2129,7 +2129,7 @@ GameObject:
   - component: {fileID: 1948657368}
   m_Layer: 5
   m_Name: Text
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2209,7 +2209,7 @@ GameObject:
   - component: {fileID: 2145075116}
   m_Layer: 5
   m_Name: UsernameInput
-  m_TagString: Untagged
+  m_TagString: AccountUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

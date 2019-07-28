@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class StatDisplayManager : MonoBehaviour
 {
@@ -23,10 +24,8 @@ public class StatDisplayManager : MonoBehaviour
     public GameObject DMD;
     public GameObject RESIST;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        openButton.transform.Find("Text").gameObject.GetComponent<Text>().text = PlayerPrefs.GetString("playerName") + " L" + gameObject.GetComponent<InventoryManager>().level.ToString();
         baseStats = display.transform.Find("BASE").gameObject;
         addStats = display.transform.Find("ADD").gameObject;
         HP = display.transform.Find("HP").gameObject;
@@ -39,6 +38,13 @@ public class StatDisplayManager : MonoBehaviour
         GOLD = display.transform.Find("GOLD").gameObject;
         DMD = display.transform.Find("DMD").gameObject;
         RESIST = display.transform.Find("RESISTANCES").gameObject;
+        startUpdate();
+    }
+
+    // Start is called before the first frame update
+    public void startUpdate()
+    {
+        openButton.transform.Find("Text").gameObject.GetComponent<Text>().text = PlayerPrefs.GetString("playerName") + " L" + gameObject.GetComponent<InventoryManager>().level.ToString();
         closeDisplay();
     }
 
@@ -108,9 +114,8 @@ public class StatDisplayManager : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
+    public void logout()
     {
-        
+        SceneManager.LoadScene("Login");
     }
 }

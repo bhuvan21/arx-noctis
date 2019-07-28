@@ -27,9 +27,6 @@ public class LoginManager : MonoBehaviour
 
     public GameObject submitButton;
 
-    bool logginIn;
-    bool registering;
-
     string username;
     string password;
     string characterName;
@@ -40,12 +37,6 @@ public class LoginManager : MonoBehaviour
     void Start()
     {
         loadingIndicator.SetActive(false);
-    }
-
-    // this is all done in states now, so that 
-    void Update()
-    {
-
     }
 
     public void login()
@@ -74,7 +65,6 @@ public class LoginManager : MonoBehaviour
                 {
                     errorDisplay.GetComponent<Text>().text = "";
                     loadingIndicator.SetActive(true);
-                    registering = true;
                     username = usernameInput.GetComponent<InputField>().text;
                     password = passwordInput.GetComponent<InputField>().text;
                     characterName = characNameInput.GetComponent<InputField>().text;
@@ -155,6 +145,7 @@ public class LoginManager : MonoBehaviour
             PlayerPrefs.SetString("playerID", "#" + resp.playerID.ToString().PadLeft(6, '0'));
             PlayerPrefs.SetString("playerStats", resp.stats);
             submitButton.GetComponent<Button>().interactable = true;
+			setUntaggeds(true);
             SceneManager.LoadScene("oaklore_center");
         }
         else
@@ -188,4 +179,54 @@ public class LoginManager : MonoBehaviour
             return bytes;
         }
     }
+
+	private void OnLevelWasLoaded(int level)
+	{
+		setUntaggeds(false);
+	}
+
+    // This is pretty bad, and I don't like that this is being used - tags didn't work for some reason but I'll get to that
+    public static List<GameObject> GetDontDestroyOnLoadObjects()
+    {
+        List<GameObject> result = new List<GameObject>();
+
+        List<GameObject> rootGameObjectsExceptDontDestroyOnLoad = new List<GameObject>();
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            rootGameObjectsExceptDontDestroyOnLoad.AddRange(SceneManager.GetSceneAt(i).GetRootGameObjects());
+        }
+
+        List<GameObject> rootGameObjects = new List<GameObject>();
+        Transform[] allTransforms = Resources.FindObjectsOfTypeAll<Transform>();
+        for (int i = 0; i < allTransforms.Length; i++)
+        {
+            Transform root = allTransforms[i].root;
+            if (root.hideFlags == HideFlags.None && !rootGameObjects.Contains(root.gameObject))
+            {
+                rootGameObjects.Add(root.gameObject);
+            }
+        }
+
+        for (int i = 0; i < rootGameObjects.Count; i++)
+        {
+            if (!rootGameObjectsExceptDontDestroyOnLoad.Contains(rootGameObjects[i]))
+                result.Add(rootGameObjects[i]);
+        }
+
+        return result;
+    }
+
+    // used to hide and show non account login/register ui things
+    void setUntaggeds(bool active)
+	{
+        List<GameObject> rootObjects = GetDontDestroyOnLoadObjects();
+        foreach (GameObject x in rootObjects)
+		{
+            if (x.tag == "Untagged")
+            {
+                x.SetActive(active);
+            }
+		}
+	}
+
 }

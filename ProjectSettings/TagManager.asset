@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - EnemyPlaceholders
+  - AccountUI
   layers:
   - Default
   - TransparentFX
