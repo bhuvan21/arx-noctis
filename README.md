@@ -16,28 +16,34 @@ Done!
 - [x] Basic Quests
 - [x] Basic Login System
 
-Todo!
+Todo Small (ish) Features!
 ------
-- [ ] Pretty Login UI with Release Notes
-- [ ] Multiple Characters per Account?
 - [ ] Shops
 - [ ] Merge Shops
-- [ ] Persisting Inventory
 - [ ] Currency
 - [ ] Level Ups
 - [ ] Stat Training
-- [ ] Better Art
 - [ ] Some Music
+- [ ] Home Town
+- [ ] Save Equips and Classes
+- [ ] Visually customiseable characters
+
+Todo Larger Features!
+------
+- [ ] Persisting Inventory
+- [ ] Cutscenes
+- [ ] 3 Base Classes
+- [ ] Multiple Characters per Account?
+
+Todo Longer Term (Prettiness)!
+------
+- [ ] Pretty Login UI with Release Notes
+- [ ] Better Art
 - [ ] Adaptive Music?
 - [ ] Interactive/Live Environments
-- [ ] Cutscenes
-- [ ] Home Town
-- [ ] 3 Base Classes
 - [ ] More weapons
 - [ ] More enemies
 - [ ] Plan Story out in Detail
 - [ ] Pet? Guests?
-- [ ] Save Equips and Classes
 - [ ] First time login quest
 - [ ] Release Newsletter
-- [ ] Visually customiseable characters
