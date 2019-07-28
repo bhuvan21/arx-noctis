@@ -26,7 +26,7 @@ Todo Small (ish) Features!
 - [ ] Some Music
 - [ ] Home Town
 - [ ] Save Equips and Classes
-- [ ] Visually customiseable characters
+- [ ] Visually customiseable characters - half done, need to add hairstyles and faces types
 
 Todo Larger Features!
 ------
