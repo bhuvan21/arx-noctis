@@ -69,6 +69,9 @@ public class CoreCharacterController : MonoBehaviour
 
     Vector3 oldScale;
 
+    public GameObject head;
+
+
     private void Start()
     {   
         currentClass = (BattleClass)Resources.Load("Ruffian");
@@ -378,10 +381,38 @@ public class CoreCharacterController : MonoBehaviour
 
     private void OnLevelWasLoaded(int level)
     {
+
+
         if (this.gameObject.GetComponent<StatDisplayManager>() != null)
         {
             this.gameObject.GetComponent<StatDisplayManager>().startUpdate();
-        } 
+        }
+        if (head != null)
+        {
+            string raw = PlayerPrefs.GetString("characterAppearance");
+            string[] colorNames = raw.Split('/');
+            List<string> rawColors = new List<string>();
+            foreach (string color in colorNames)
+            {
+                rawColors.Add(color);
+            }
+            rawColors.Insert(0, rawColors[0]);
+            List<Color> colors = new List<Color>();
+            int i = 0;
+            List<string> objectNames = new List<string>() { "face", "ear", "hair", "pupil" };
+            foreach (string colorName in rawColors)
+            {
+                int red = int.Parse(colorName.Substring(0, 3));
+                int green = int.Parse(colorName.Substring(3, 3));
+                int blue = int.Parse(colorName.Substring(6, 3));
+                Color color = new Color(red / 256.0f, green / 256.0f, blue / 256.0f);
+
+                head.transform.Find(objectNames[i]).gameObject.GetComponent<SpriteRenderer>().color = color;
+
+                i++;
+            }
+        }
+        
     }
 
 }

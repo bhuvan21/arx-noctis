@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,16 +12,19 @@ using AssemblyCSharp.Assets.Scripts.Medo.Security;
 using AssemblyCSharp.Assets.Scripts.Medo.Security.Cryptography;
 using System.Net.Mail;
 using UnityEngine.EventSystems;
-
-public class LoginManager : MonoBehaviour
+public class AccountCreator : MonoBehaviour
 {
 
     public GameObject usernameInput;
     public GameObject passwordInput;
     public GameObject characNameInput;
+    public GameObject SkinColorPicker;
+    public GameObject HairColorPicker;
+    public GameObject EyeColorPicker;
 
     public GameObject errorDisplay;
     public GameObject loadingIndicator;
+    public GameObject model;
 
     public GameObject tosAccepted;
 
@@ -31,12 +34,13 @@ public class LoginManager : MonoBehaviour
     string password;
     string characterName;
     string value;
+    string appearance;
 
     private EventSystem system;
+    
 
-    bool loginFlag;
 
-    Dictionary<string, string> errors = new Dictionary<string, string>() { { "0", "Invalid credentials" }, { "1", "You need to verify your account! Check email." }, { "2", "An account with this email adress already exists."}, { "3", "An account with this character name already exists." } };
+    Dictionary<string, string> errors = new Dictionary<string, string>() { { "0", "Invalid credentials" }, { "1", "You need to verify your account! Check email." }, { "2", "An account with this email adress already exists." }, { "3", "An account with this character name already exists." } };
 
     void Start()
     {
@@ -44,13 +48,14 @@ public class LoginManager : MonoBehaviour
         system = EventSystem.current;
     }
 
-    private void Update()
+    // Update is called once per frame
+    void Update()
     {
-        if (loginFlag)
-        {
-            loginFlag = false;
-            login();
-        }
+
+        Color skin = SkinColorPicker.GetComponent<RGBSliders>().getColor();
+        Color hair = HairColorPicker.GetComponent<RGBSliders>().getColor();
+        Color eye = EyeColorPicker.GetComponent<RGBSliders>().getColor();
+        model.GetComponent<CharacterCreationModel>().setHead(skin, hair, eye);
 
 
         if (Input.GetKeyDown(KeyCode.Tab)
@@ -83,78 +88,103 @@ public class LoginManager : MonoBehaviour
             errorDisplay.GetComponent<Text>().text = "";
             loadingIndicator.SetActive(true);
             submitButton.GetComponent<Button>().interactable = false;
-            loginFlag = true;
+            register();
         }
-        
+
     }
 
-    public void login()
+
+    public void register()
     {
-        errorDisplay.GetComponent<Text>().text = "";
-        loadingIndicator.SetActive(true);
+
         submitButton.GetComponent<Button>().interactable = false;
         username = usernameInput.GetComponent<InputField>().text;
         password = passwordInput.GetComponent<InputField>().text;
-
-		value = Encoding.UTF8.GetString(PBKDF2(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes("thisisepic"), 64000, 18));
-		StartCoroutine(loginCoroutine(username, value));
-	}
-
-    public void goToCreate()
-    {
-        SceneManager.LoadScene("CreateAccount");
+        if (isEmailValid(username))
+        {
+            if (password.Length >= 6)
+            {
+                if (tosAccepted.GetComponent<Toggle>().isOn)
+                {
+                    errorDisplay.GetComponent<Text>().text = "";
+                    loadingIndicator.SetActive(true);
+                    username = usernameInput.GetComponent<InputField>().text;
+                    password = passwordInput.GetComponent<InputField>().text;
+                    characterName = characNameInput.GetComponent<InputField>().text;
+                    value = Encoding.UTF8.GetString(PBKDF2(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes("thisisepic"), 64000, 18));
+                    appearance = SkinColorPicker.GetComponent<RGBSliders>().getRawColor() + "/" + HairColorPicker.GetComponent<RGBSliders>().getRawColor() + "/" + EyeColorPicker.GetComponent<RGBSliders>().getRawColor();
+                    StartCoroutine(registerCoroutine(username, value, characterName, appearance));
+                }
+                else
+                {
+                    errorDisplay.GetComponent<Text>().text = "You must accept the terms of service.";
+                    submitButton.GetComponent<Button>().interactable = true;
+                }
+            }
+            else
+            {
+                errorDisplay.GetComponent<Text>().text = "Your password must be 6 characters or more!";
+                submitButton.GetComponent<Button>().interactable = true;
+            }
+        }
+        else
+        {
+            errorDisplay.GetComponent<Text>().text = "Invalid email.";
+            submitButton.GetComponent<Button>().interactable = true;
+        }
     }
 
-    public void goToLogin()
-    {
-        SceneManager.LoadScene("Login");
-    }
-
-    
-
-
-    IEnumerator loginCoroutine(string username, string password)
+    IEnumerator registerCoroutine(string username, string password, string characterName, string appearance)
     {
         WWWForm form = new WWWForm();
         form.AddField("username", username);
         form.AddField("password", password);
-        UnityWebRequest request = UnityWebRequest.Post("https://arx-noctis-backend.herokuapp.com/authenticate", form);
+        form.AddField("characterName", characterName);
+        form.AddField("characterAppearance", appearance);
+        UnityWebRequest request = UnityWebRequest.Post("https://arx-noctis-backend.herokuapp.com/register", form);
         yield return request.Send();
         LoginResp resp = JsonUtility.FromJson<LoginResp>(request.downloadHandler.text);
         loadingIndicator.SetActive(false);
         if (resp.resp)
         {
-            PlayerPrefs.SetString("playerName", resp.characterName);
-            PlayerPrefs.SetString("playerID", "#" + resp.playerID.ToString().PadLeft(6, '0'));
-            PlayerPrefs.SetString("playerStats", resp.stats);
-            PlayerPrefs.SetString("characterAppearance", resp.characterAppearance);
-            submitButton.GetComponent<Button>().interactable = true;
-			setUntaggeds(true);
-            SceneManager.LoadScene("oaklore_center");
+            errorDisplay.GetComponent<Text>().text = "Thanks for signing up! Please verify your email.";
+            StartCoroutine(waitToLogin(3.0f));
         }
         else
         {
             errorDisplay.GetComponent<Text>().text = errors[resp.failCode];
             submitButton.GetComponent<Button>().interactable = true;
-            yield break;
         }
+    }
 
+    public bool isEmailValid(string emailaddress)
+    {
+        try
+        {
+            MailAddress m = new MailAddress(emailaddress);
+            return true;
+        }
+        catch (FormatException)
+        {
+            return false;
+        }
     }
 
     byte[] PBKDF2(byte[] password, byte[] salt, int iterations, int outputBytes)
     {
 
-        using (var hmac = new HMACSHA256()) {
+        using (var hmac = new HMACSHA256())
+        {
             var df = new Pbkdf2(hmac, password, salt, iterations);
             var bytes = df.GetBytes(outputBytes);
             return bytes;
         }
     }
 
-	private void OnLevelWasLoaded(int level)
-	{
-		setUntaggeds(false);
-	}
+    private void OnLevelWasLoaded(int level)
+    {
+        setUntaggeds(false);
+    }
 
     // This is pretty bad, and I don't like that this is being used - tags didn't work for some reason but I'll get to that
     public static List<GameObject> GetDontDestroyOnLoadObjects()
@@ -189,15 +219,23 @@ public class LoginManager : MonoBehaviour
 
     // used to hide and show non account login/register ui things
     void setUntaggeds(bool active)
-	{
+    {
         List<GameObject> rootObjects = GetDontDestroyOnLoadObjects();
         foreach (GameObject x in rootObjects)
-		{
+        {
             if (x.tag == "Untagged")
             {
                 x.SetActive(active);
             }
-		}
-	}
+        }
+    }
+
+
+    IEnumerator waitToLogin(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        submitButton.GetComponent<Button>().interactable = true;
+        SceneManager.LoadScene("Login");
+    }
 
 }

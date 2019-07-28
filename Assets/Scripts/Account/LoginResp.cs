@@ -10,4 +10,5 @@ public class LoginResp
     public int playerID;
     public string stats;
     public string failCode;
+    public string characterAppearance;
 }
