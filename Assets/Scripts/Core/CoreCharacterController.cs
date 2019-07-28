@@ -238,7 +238,7 @@ public class CoreCharacterController : MonoBehaviour
             increment = increment / moveSpeed;
             movePercentage += increment;
             Vector2 newPos = Vector2.Lerp(movingFrom, movingTo, movePercentage);
-            transform.position = newPos;
+            this.gameObject.GetComponent<Rigidbody2D>().MovePosition(newPos);
         }
         else if (movePercentage >= 1)
         {
