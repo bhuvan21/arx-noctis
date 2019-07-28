@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 using AssemblyCSharp.Assets.Scripts.Medo.Security;
 using AssemblyCSharp.Assets.Scripts.Medo.Security.Cryptography;
 using System.Net.Mail;
-
+using UnityEngine.EventSystems;
 
 public class LoginManager : MonoBehaviour
 {
@@ -32,11 +32,60 @@ public class LoginManager : MonoBehaviour
     string characterName;
     string value;
 
+    private EventSystem system;
+
+    bool loginFlag;
+
     Dictionary<string, string> errors = new Dictionary<string, string>() { { "0", "Invalid credentials" }, { "1", "You need to verify your account! Check email." }, { "2", "An account with this email adress already exists."}, { "3", "An account with this character name already exists." } };
 
     void Start()
     {
         loadingIndicator.SetActive(false);
+        system = EventSystem.current;
+    }
+
+    private void Update()
+    {
+        if (loginFlag)
+        {
+            loginFlag = false;
+            login();
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.Tab)
+            && system.currentSelectedGameObject != null
+            && system.currentSelectedGameObject.GetComponent<Selectable>() != null)
+        {
+            Selectable next = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ?
+            system.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnUp() :
+            system.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnDown();
+
+            if (next != null)
+            {
+                InputField inputfield = next.GetComponent<InputField>();
+                if (inputfield != null)
+                {
+                    inputfield.OnPointerClick(new PointerEventData(system));
+                }
+
+                system.SetSelectedGameObject(next.gameObject);
+            }
+            else
+            {
+                next = Selectable.allSelectables[0];
+                system.SetSelectedGameObject(next.gameObject);
+            }
+
+        }
+        if (Input.GetKeyDown(KeyCode.Return) && system.currentSelectedGameObject == passwordInput)
+        {
+            errorDisplay.GetComponent<Text>().text = "";
+            loadingIndicator.SetActive(true);
+            submitButton.GetComponent<Button>().interactable = false;
+            loginFlag = true;
+        }
+        
     }
 
     public void login()
