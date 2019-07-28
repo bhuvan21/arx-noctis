@@ -40,3 +40,4 @@ Todo!
 - [ ] Save Equips and Classes
 - [ ] First time login quest
 - [ ] Release Newsletter
+- [ ] Visually customiseable characters
