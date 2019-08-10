@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
 {
     public string internalName = "slime.basic.1";
     public string displayName = "Basic Slime";
+    public int level;
 
     public Animator animator;
 

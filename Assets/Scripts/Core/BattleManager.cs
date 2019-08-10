@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class BattleManager : MonoBehaviour
 {
@@ -48,6 +49,8 @@ public class BattleManager : MonoBehaviour
 
     Vector3 oldScale;
 
+    string placeID;
+
     // reset all the cooldowns
     void CleanUp()
     {
@@ -85,7 +88,7 @@ public class BattleManager : MonoBehaviour
         hackyShow(enemyName);
 
         // show the enemy's name
-        enemyName.GetComponent<Text>().text = enemy.GetComponent<Enemy>().displayName;
+        enemyName.GetComponent<Text>().text = "Level " + enemy.GetComponent<Enemy>().level.ToString() + " " + enemy.GetComponent<Enemy>().displayName;
 
         attackButtons.Add(buttonAttackM7);
         attackButtons.Add(buttonAttackM6);
@@ -352,8 +355,35 @@ public class BattleManager : MonoBehaviour
 
     public void EnemyDead()
     {
-        string placeID = enemy.GetComponent<Enemy>().placeholderID;
+        GameObject myPrefab = Resources.Load("Prefabs/BigScroll", typeof(GameObject)) as GameObject;
+        GameObject scroll = Instantiate(myPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        scroll.transform.Find("Name").GetComponent<TextMesh>().text = "Battle Over!";
+        scroll.transform.Find("Name").GetComponent<Renderer>().sortingLayerName = "Popups";
+        scroll.transform.Find("Name").GetComponent<Renderer>().sortingOrder = 1000;
+        player.GetComponent<InventoryManager>().gold += CalculateGold();
+        player.GetComponent<InventoryManager>().xp += CalculateXP();
+        scroll.transform.Find("Description").GetComponent<TextMeshPro>().text = "Epic win! You defeated " + enemy.GetComponent<Enemy>().displayName + "!\nGold : " + CalculateGold().ToString() +  "\nXP : " + CalculateXP().ToString();
+        scroll.transform.Find("Description").GetComponent<Renderer>().sortingLayerName = "Popups";
+        scroll.transform.Find("Description").GetComponent<Renderer>().sortingOrder = 1000;
+        scroll.transform.position = new Vector3(0, 0, 0);
+        myPrefab = Resources.Load("Prefabs/MenuButton", typeof(GameObject)) as GameObject;
+        GameObject button = Instantiate(myPrefab, Camera.main.WorldToScreenPoint(new Vector3(0, -3, 0)), Quaternion.identity);
+        button.transform.Find("Text").GetComponent<Text>().text = "OK";
+        button.transform.parent = GameObject.Find("Canvas").transform;
+        button.transform.localScale = new Vector3(1, 1, 1);
+
+        placeID = enemy.GetComponent<Enemy>().placeholderID;
         Destroy(enemy);
+
+        button.GetComponent<Button>().onClick.AddListener(() => ExitBattle());
+        button.GetComponent<Button>().onClick.AddListener(() => Destroy(scroll));
+        button.GetComponent<Button>().onClick.AddListener(() => Destroy(button));
+        
+    }
+
+    void ExitBattle()
+    {
+       
         player.GetComponent<CoreCharacterController>().inBattle = false;
         player.GetComponent<CoreCharacterController>().EndBattle(placeID);
         CleanUp();
@@ -408,5 +438,14 @@ public class BattleManager : MonoBehaviour
         buttonAttack0.SetActive(true);
     }
 
+    int CalculateGold()
+    {
+        return enemy.GetComponent<Enemy>().maxHealth / 5;
+    }
+
+    int CalculateXP()
+    {
+        return enemy.GetComponent<Enemy>().level * 5;
+    }
 
 }

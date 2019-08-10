@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    List<string> places = new List<string>();
-    List<bool> destroyed = new List<bool>();
-    List<GameObject> mine = new List<GameObject>();
+    public List<string> places = new List<string>();
+    public List<bool> destroyed = new List<bool>();
+    public List<GameObject> mine = new List<GameObject>();
 
     private static EnemySpawner spawnerInstance;
 
@@ -26,6 +26,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void OnLevelWasLoaded(int level)
     {
+
         GameObject[] placeholders = GameObject.FindGameObjectsWithTag("EnemyPlaceholders");
 
         for (int i = 0; i < mine.Count; i++)

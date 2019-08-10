@@ -99,7 +99,7 @@ public class StatDisplayManager : MonoBehaviour
         XP.GetComponent<Text>().text = "XP : " + this.gameObject.GetComponent<InventoryManager>().xp.ToString() + "/" + this.gameObject.GetComponent<InventoryManager>().levelXp.ToString();
 
         GOLD.GetComponent<Text>().text = "GOLD : " + this.gameObject.GetComponent<InventoryManager>().gold.ToString();
-        DMD.GetComponent<Text>().text = "GOLD : " + this.gameObject.GetComponent<InventoryManager>().diamond.ToString();
+        DMD.GetComponent<Text>().text = "DIAMOND : " + this.gameObject.GetComponent<InventoryManager>().diamond.ToString();
 
         ID.GetComponent<Text>().text = "ID : " + PlayerPrefs.GetString("playerID");
         DMG.GetComponent<Text>().text = "DMG\n" + this.gameObject.GetComponent<InventoryManager>().currentWeapon.minimum.ToString() + " - " + this.gameObject.GetComponent<InventoryManager>().currentWeapon.maximum.ToString();

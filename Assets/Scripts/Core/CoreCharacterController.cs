@@ -335,6 +335,9 @@ public class CoreCharacterController : MonoBehaviour
 
     public void EndQuest(Collider2D col)
     {
+        spawner.GetComponent<EnemySpawner>().mine.Clear();
+        spawner.GetComponent<EnemySpawner>().places.Clear();
+        spawner.GetComponent<EnemySpawner>().destroyed.Clear();
         SceneManager.LoadScene(col.gameObject.GetComponent<InteractionManager>().sceneName);
         transform.position = col.gameObject.GetComponent<InteractionManager>().goTo;
     }
