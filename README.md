@@ -1,5 +1,5 @@
 # arx-noctis
-A game I'm making - inspired by older RPGs.
+A game I'm making inspired by older RPGs. Something of a passion project sparked by old web rpgs being destroyed due to adobe flash's deprecation.
 Arx noctis means 'Citadel of Night' which just sounds cool because it's Latin, and has no bearing on the game's content currently. The game can be played at : https://bhuvan21.github.io/arx-noctis-release/
 Please file any bugs and feature requests under issues! I'll get to them ASAP (maybe)
 
