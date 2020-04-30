@@ -11,6 +11,8 @@ public class BattleManager : MonoBehaviour
     public GameObject player;
     public GameObject enemy;
 
+    public GameObject canvas;
+
     // This was the easiest way to do this (M = minus)
     List<GameObject> attackButtons = new List<GameObject>();
     public GameObject buttonAttack0;
@@ -286,8 +288,13 @@ public class BattleManager : MonoBehaviour
         GameObject myPrefab = Resources.Load("Prefabs/Damage", typeof(GameObject)) as GameObject;
         GameObject damage = Instantiate(myPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         damage.transform.position = enemySpot.transform.position;
-        damage.transform.parent = enemySpot.transform;
-        damage.GetComponent<TextMesh>().characterSize = 0.5f;
+        damage.transform.position = new Vector3(enemySpot.transform.position.x+Random.Range(-0.5f, 0.5f), enemySpot.transform.position.y + Random.Range(-0.5f, 0.5f), -5);
+        damage.layer = 5;
+        damage.transform.parent = canvas.transform;
+        //NEEDS TO BE FIXED
+        damage.transform.position = new Vector3(500, 500, -5);
+        damage.GetComponent<TextMesh>().characterSize = 100.5f;
+        damage.GetComponent<MeshRenderer>().sortingLayerID = 5;
 
         // Check if critical, and apply crit modifier
         int criticalRoll = Random.Range(0, 100);
@@ -312,7 +319,7 @@ public class BattleManager : MonoBehaviour
 
         audio.Play();
 
-        Destroy(damage, 0.5f);
+        Destroy(damage, 0.25f);
 
         enemy.GetComponent<Enemy>().currentHealth -= final;
         if (enemy.GetComponent<Enemy>().currentHealth <=0)
@@ -342,12 +349,22 @@ public class BattleManager : MonoBehaviour
 
         int final = Mathf.CeilToInt(modified);
 
+        // Delete previous damage indicators
+        GameObject playerSpot = GameObject.Find("PlayerDamageSpot");
+        foreach (Transform child in playerSpot.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
         GameObject myPrefab = Resources.Load("Prefabs/Damage", typeof(GameObject)) as GameObject;
         GameObject damage = Instantiate(myPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         damage.transform.position = GameObject.Find("PlayerDamageSpot").transform.position;
+        damage.transform.position = new Vector3(playerSpot.transform.position.x + Random.Range(-0.5f, 0.5f), playerSpot.transform.position.y + Random.Range(-0.5f, 0.5f), -5);
+        damage.layer = 5;
         damage.GetComponent<TextMesh>().text = final.ToString();
         damage.GetComponent<TextMesh>().characterSize = 0.5f;
-        Destroy(damage, 0.5f);
+        audio.Play();
+        Destroy(damage, 0.25f);
 
         player.GetComponent<InventoryManager>().currentHealth -= final;
         UpdatePointBars();
