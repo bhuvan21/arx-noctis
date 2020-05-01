@@ -44,7 +44,7 @@ public class EnemySpawner : MonoBehaviour
 
                 places.Add(placeholders[i].name);
                 destroyed.Add(false);
-                GameObject myPrefab = Resources.Load("Prefabs/" + placeholders[i].GetComponent<EnemyPlaceholder>().prefab, typeof(GameObject)) as GameObject;
+                GameObject myPrefab = Resources.Load("Prefabs/Monsters/" + placeholders[i].GetComponent<EnemyPlaceholder>().prefab, typeof(GameObject)) as GameObject;
                 GameObject enemy = Instantiate(myPrefab, placeholders[i].transform.position, Quaternion.identity);
                 enemy.GetComponent<Enemy>().placeholderID = placeholders[i].name;
                 enemy.transform.localScale = Vector3.Scale(enemy.transform.localScale, placeholders[i].transform.localScale);
@@ -54,7 +54,7 @@ public class EnemySpawner : MonoBehaviour
             {
                 if (!(placeholders.Length == mine.Count))
                 {
-                    GameObject myPrefab = Resources.Load("Prefabs/" + placeholders[i].GetComponent<EnemyPlaceholder>().prefab, typeof(GameObject)) as GameObject;
+                    GameObject myPrefab = Resources.Load("Prefabs/Monsters/" + placeholders[i].GetComponent<EnemyPlaceholder>().prefab, typeof(GameObject)) as GameObject;
                     GameObject enemy = Instantiate(myPrefab, placeholders[i].transform.position, Quaternion.identity);
                     enemy.GetComponent<Enemy>().placeholderID = placeholders[i].name;
                     enemy.transform.localScale = Vector3.Scale(enemy.transform.localScale, placeholders[i].transform.localScale);

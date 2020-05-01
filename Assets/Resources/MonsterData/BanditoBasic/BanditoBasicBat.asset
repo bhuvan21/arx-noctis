@@ -21,7 +21,7 @@ MonoBehaviour:
   equipType: weapon
   stats:
   - name: power
-    value: 0
+    value: 5
   - name: immunity
     value: 0
   - name: endurance

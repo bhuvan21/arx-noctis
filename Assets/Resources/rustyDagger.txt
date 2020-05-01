@@ -1,8 +1,0 @@
-{
-	"weaponName" : "Rusty Daggers",
-	"minimum" : 7,
-	"maximum" : 15,
-	"dual" : true,
-	"path" : "Prefabs/trash_dagger",
-	"rotation" : 100
-}

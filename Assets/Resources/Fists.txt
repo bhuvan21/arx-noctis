@@ -1,5 +1,0 @@
-{
-	"weaponName" : "Fists",
-	"minimum" : 5,
-	"maximum" : 10
-}

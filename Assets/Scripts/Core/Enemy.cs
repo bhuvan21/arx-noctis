@@ -45,6 +45,16 @@ public class Enemy : MonoBehaviour
 
     public bool isDead;
 
+    public List<Armour.Stat> stats = new List<Armour.Stat>
+    { 
+        new Armour.Stat("power", 0),
+        new Armour.Stat("immunity", 0),
+        new Armour.Stat("endurance", 0),
+        new Armour.Stat("wisdom", 0),
+        new Armour.Stat("luck", 0),
+        new Armour.Stat("recovery", 0)
+    };
+
     public List<Armour.Resistance> resistances = new List<Armour.Resistance>
     {
         new Armour.Resistance("fire", 0),
@@ -61,6 +71,40 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+
+        for (int i = 0; i < resistances.Count; i++)
+        {
+            Armour.Resistance res = resistances[i];
+            Armour.Resistance newres = new Armour.Resistance();
+            newres.name = res.name;
+            for (int j = 0; j < currentWeapon.resistances.Count; j++)
+            {
+                Armour.Resistance resadd = currentWeapon.resistances[j];
+                if (resadd.name == res.name)
+                {
+                    newres.value = resadd.value + res.value;
+                    
+                }
+            }
+            resistances[i] = newres;
+        }
+
+
+        for (int i = 0; i < stats.Count; i++)
+        {
+            Armour.Stat stat = stats[i];
+            Armour.Stat newstat = new Armour.Stat();
+            newstat.name = stat.name;
+            for (int j = 0; j < currentWeapon.stats.Count; j++)
+            {
+                Armour.Stat statadd = currentWeapon.stats[j];
+                if (statadd.name == stat.name)
+                {
+                    newstat.value = statadd.value + stat.value;
+                }
+            }
+            stats[i] = newstat;
+        }
     }
 
     void Update()

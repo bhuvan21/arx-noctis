@@ -42,6 +42,7 @@ public class BattleManager : MonoBehaviour
     public GameObject enemyHealthBar;
     public GameObject enemyManaBar;
     public GameObject enemyName;
+    public GameObject enemyInfo;
 
     // the damage indicators
     GameObject playerDamage;
@@ -86,9 +87,14 @@ public class BattleManager : MonoBehaviour
         enemyHealthBar = GameObject.Find("Healthbar2");
         enemyManaBar = GameObject.Find("Manabar2");
         enemyName = GameObject.Find("EnemyName");
+        enemyInfo = GameObject.Find("EnemyInfo");
         hackyShow(enemyHealthBar);
         hackyShow(enemyManaBar);
         hackyShow(enemyName);
+        hackyShow(enemyInfo);
+
+        enemyInfo.GetComponent<Button>().onClick.AddListener(() => player.GetComponent<StatDisplayManager>().showEnemy());
+
 
         // show the enemy's name
         enemyName.GetComponent<Text>().text = "Level " + enemy.GetComponent<Enemy>().level.ToString() + " " + enemy.GetComponent<Enemy>().displayName;
@@ -192,6 +198,7 @@ public class BattleManager : MonoBehaviour
                 enemyAttack = attack;
             }
         }
+        enemyAttack = attacks[Random.Range(0, attacks.Length - 1)];
         enemy.GetComponent<Enemy>().MoveToAttack();
     }
 
@@ -273,20 +280,26 @@ public class BattleManager : MonoBehaviour
         int max = player.GetComponent<CoreCharacterController>().statMaximum;
         Weapon weapon = player.GetComponent<InventoryManager>().currentWeapon;
 
-        DamageInstance dmg =  CalculateDamage(max, weapon, playerAttack, true, enemy.GetComponent<Enemy>().resistances);
-
-        CreateDamageIndicator(dmg.value, true, dmg.critical);
-
-        enemy.GetComponent<Enemy>().currentHealth -= dmg.value;
-        if (enemy.GetComponent<Enemy>().currentHealth <=0)
+        if (enemy != null)
         {
-            enemy.GetComponent<Enemy>().currentHealth = 0;
-            enemy.GetComponent<Enemy>().isDead = true;
-            hackyHide(enemyHealthBar);
-            hackyHide(enemyManaBar);
-            hackyHide(enemyName);
+            DamageInstance dmg = CalculateDamage(max, weapon, playerAttack, true, enemy.GetComponent<Enemy>().resistances);
+
+            CreateDamageIndicator(dmg.value, true, dmg.critical);
+
+            enemy.GetComponent<Enemy>().currentHealth = Mathf.Min(enemy.GetComponent<Enemy>().currentHealth - dmg.value, enemy.GetComponent<Enemy>().maxHealth);
+
+            if (enemy.GetComponent<Enemy>().currentHealth <= 0)
+            {
+                enemy.GetComponent<Enemy>().currentHealth = 0;
+                enemy.GetComponent<Enemy>().isDead = true;
+                hackyHide(enemyHealthBar);
+                hackyHide(enemyManaBar);
+                hackyHide(enemyName);
+                hackyHide(enemyInfo);
+            }
+            UpdatePointBars();
         }
-        UpdatePointBars();
+        
     }
 
     // where the enemy damage happens (for now) TODO make player and enemy damage the same
@@ -297,7 +310,7 @@ public class BattleManager : MonoBehaviour
 
         CreateDamageIndicator(dmg.value, false, dmg.critical);
 
-        player.GetComponent<InventoryManager>().currentHealth -= dmg.value;
+        player.GetComponent<InventoryManager>().currentHealth = Mathf.Min(player.GetComponent<InventoryManager>().currentHealth - dmg.value, player.GetComponent<InventoryManager>().maxHealth);
         UpdatePointBars();
     }
 
@@ -329,7 +342,7 @@ public class BattleManager : MonoBehaviour
 
         if (critical)
         {
-            damage.GetComponent<TextMeshProUGUI>().fontSize = damage.GetComponent<TextMeshPro>().fontSize * 2.0f;
+            damage.GetComponent<TextMeshProUGUI>().fontSize = damage.GetComponent<TextMeshProUGUI>().fontSize * 2.0f;
         }
 
         audio.Play();
@@ -352,15 +365,18 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            power = enemy.GetComponent<Enemy>().power;
-            luck = enemy.GetComponent<Enemy>().luck;
+            power = enemy.GetComponent<Enemy>().stats[0].value;
+            print(power);
+            luck = enemy.GetComponent<Enemy>().stats[4].value;
         }
 
         int baseDamage = Random.Range(weapon.minimum, weapon.maximum + 1);
         float modified = baseDamage * attack.multiplier;
 
         // Apply power modifier
-        modified = modified * (1.0f + (power / statMax * 2.0f));
+        print((1.0f + ((float)power / (float)statMax * 2.0f)));
+        modified = modified * (1.0f + ((float)power / (float)statMax * 2.0f));
+
 
         dmg.critical = false;
         dmg.element = weapon.element;

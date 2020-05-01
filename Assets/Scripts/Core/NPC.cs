@@ -32,7 +32,7 @@ public class NPC : MonoBehaviour
         Vector3 pos = gameObject.transform.position;
         speechPos = new Vector3(pos.x - 7, pos.y+1.25f, pos.z);
 
-        TextAsset txtAsset = Resources.Load(filename) as TextAsset;
+        TextAsset txtAsset = Resources.Load("NPCData/" + filename) as TextAsset;
         XmlDocument xmlDoc = new XmlDocument();
         xmlDoc.LoadXml(txtAsset.text);
         name = xmlDoc.DocumentElement.Attributes[0].Value;
@@ -160,7 +160,7 @@ public class NPC : MonoBehaviour
 
     void enterQuest(XmlNode node)
     {
-        Quest quest = (Quest)Resources.Load(node.Attributes[1].Value);
+        Quest quest = (Quest)Resources.Load("Quests/" + node.Attributes[1].Value);
         player.GetComponent<CoreCharacterController>().currentQuest = quest;
         player.transform.position = quest.entryPoint;
         player.transform.localScale = quest.entryScale;

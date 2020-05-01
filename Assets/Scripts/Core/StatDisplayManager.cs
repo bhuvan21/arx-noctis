@@ -23,6 +23,7 @@ public class StatDisplayManager : MonoBehaviour
     public GameObject GOLD;
     public GameObject DMD;
     public GameObject RESIST;
+    public GameObject LVLCLASS;
 
     private void Start()
     {
@@ -101,17 +102,60 @@ public class StatDisplayManager : MonoBehaviour
         GOLD.GetComponent<Text>().text = "GOLD : " + this.gameObject.GetComponent<InventoryManager>().gold.ToString();
         DMD.GetComponent<Text>().text = "DIAMOND : " + this.gameObject.GetComponent<InventoryManager>().diamond.ToString();
 
-        ID.GetComponent<Text>().text = "ID : " + PlayerPrefs.GetString("playerID");
-        DMG.GetComponent<Text>().text = "DMG\n" + this.gameObject.GetComponent<InventoryManager>().currentWeapon.minimum.ToString() + " - " + this.gameObject.GetComponent<InventoryManager>().currentWeapon.maximum.ToString();
-        ELM.GetComponent<Text>().text = "ELEMENT:\n" + this.gameObject.GetComponent<InventoryManager>().currentWeapon.element;
-        CRIT.GetComponent<Text>().text = "CRIT\n" + (this.gameObject.GetComponent<InventoryManager>().getStat("luck") / 200.0f * 40.0f).ToString() + "%";
+        ID.GetComponent<TMPro.TextMeshProUGUI>().text =  PlayerPrefs.GetString("playerName") +", Player ID : " + PlayerPrefs.GetString("playerID");
+        DMG.GetComponent<Text>().text = "Weapon Base Damage : " + this.gameObject.GetComponent<InventoryManager>().currentWeapon.minimum.ToString() + " - " + this.gameObject.GetComponent<InventoryManager>().currentWeapon.maximum.ToString();
+        ELM.GetComponent<Text>().text = "Weapon Element : " + this.gameObject.GetComponent<InventoryManager>().currentWeapon.element;
+        CRIT.GetComponent<Text>().text = "Critical Hit Chance : " + (this.gameObject.GetComponent<InventoryManager>().getStat("luck") / 200.0f * 40.0f).ToString() + "%";
+        LVLCLASS.GetComponent<TMPro.TextMeshProUGUI>().text = "Level " + this.gameObject.GetComponent<InventoryManager>().level.ToString() + " " + this.gameObject.GetComponent<CoreCharacterController>().currentClass.className;
+
 
         RESIST.GetComponent<Text>().text = "";
         foreach(Armour.Resistance res in this.gameObject.GetComponent<CoreCharacterController>().resistances)
         {
-            RESIST.GetComponent<Text>().text += res.name + " " + res.value.ToString() + "\n";
+            RESIST.GetComponent<Text>().text += char.ToUpper(res.name[0]) + res.name.Substring(1) + " " + res.value.ToString() + "\n";
         }
 
+    }
+
+    public void showEnemy()
+    {
+        display.SetActive(true);
+        GameObject manager = GameObject.Find("BattleManager");
+        updateEnemyData(manager.GetComponent<BattleManager>().enemy);
+    }
+
+    public void updateEnemyData(GameObject enemyGO)
+    {
+        Enemy enemy = enemyGO.GetComponent<Enemy>();
+        baseStats.GetComponent<Text>().text = "";
+        baseStats.GetComponent<Text>().text += enemy.stats[0].value.ToString() + "\n";
+        baseStats.GetComponent<Text>().text += enemy.stats[1].value.ToString() + "\n";
+        baseStats.GetComponent<Text>().text += enemy.stats[2].value.ToString() + "\n";
+        baseStats.GetComponent<Text>().text += enemy.stats[3].value.ToString() + "\n";
+        baseStats.GetComponent<Text>().text += enemy.stats[4].value.ToString() + "\n";
+        baseStats.GetComponent<Text>().text += enemy.stats[5].value.ToString() + "\n";
+
+        addStats.GetComponent<Text>().text = "";
+        List<int> addStatList = new List<int>();
+
+        HP.GetComponent<Text>().text = "HP : " + enemy.currentHealth.ToString() + "/" + enemy.maxHealth.ToString();
+        MP.GetComponent<Text>().text = "MP : " + enemy.currentMana.ToString() + "/" + enemy.maxMana.ToString();
+        // ENEMIES HAVE NO XP
+        XP.GetComponent<Text>().text = "XP : " + (enemy.level * 100).ToString() + "/" + (enemy.level * 100).ToString();
+
+        GOLD.GetComponent<Text>().text = "GOLD : ";
+        DMD.GetComponent<Text>().text = "DIAMOND : ";
+
+        ID.GetComponent<TMPro.TextMeshProUGUI>().text = "ID : ";
+        DMG.GetComponent<Text>().text = "Weapon Base Damage : " + enemy.currentWeapon.minimum.ToString() + " - " + enemy.currentWeapon.maximum.ToString();
+        ELM.GetComponent<Text>().text = "ELEMENT : " + enemy.currentWeapon.element;
+        CRIT.GetComponent<Text>().text = "CRIT : " + (enemy.stats[4].value / 200.0f * 40.0f).ToString() + "%";
+        LVLCLASS.GetComponent<TMPro.TextMeshProUGUI>().text = "Level " + enemy.level.ToString() + ", " + enemy.displayName;
+        RESIST.GetComponent<Text>().text = "";
+        foreach (Armour.Resistance res in enemy.resistances)
+        {
+            RESIST.GetComponent<Text>().text += res.name + " " + res.value.ToString() + "\n";
+        }
     }
 
     public void logout()

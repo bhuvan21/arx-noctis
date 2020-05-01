@@ -83,9 +83,9 @@ public class InventoryManager : MonoBehaviour
         weaponStats = inventoryPanel.transform.Find("Display").transform.Find("Stats").gameObject;
         weaponElements = inventoryPanel.transform.Find("Display").transform.Find("Resistances").gameObject;
         weaponPreview = inventoryPanel.transform.Find("Display").transform.Find("Preview").gameObject;
-        setDefaultWeapon((Weapon)Resources.Load("Fists"));
-        addItem((Weapon)Resources.Load("RustyDagger"));
-        addItem((Weapon)Resources.Load("WeirdBone"));
+        setDefaultWeapon((Weapon)Resources.Load("PlayerObjects/Weapons/Fists"));
+        addItem((Weapon)Resources.Load("PlayerObjects/Weapons/RustyDagger"));
+        addItem((Weapon)Resources.Load("PlayerObjects/Weapons/WeirdBone"));
         equipWeapon(defaultWeapon);
         fullHeal();
         closeInventory();
@@ -214,7 +214,7 @@ public class InventoryManager : MonoBehaviour
             weaponName.GetComponent<Text>().text = weapon.displayName;
             weaponCategory.GetComponent<Text>().text = "Level " + weapon.level.ToString() + " " + weapon.displayType;
             weaponDescription.GetComponent<Text>().text = weapon.description;
-            weaponDescription.GetComponent<Text>().text += "\nDamage: " + weapon.minimum.ToString() + " - " + weapon.maximum.ToString();
+            weaponDescription.GetComponent<Text>().text += "\nDamage: " + weapon.minimum.ToString() + " - " + weapon.maximum.ToString() + " " + char.ToUpper(weapon.element[0]) + weapon.element.Substring(1);
             foreach(Armour.Stat stat in weapon.stats)
             {
                 if (stat.value != 0)

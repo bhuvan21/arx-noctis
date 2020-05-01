@@ -9,10 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 776e7633bf5a8444ebe597b268597894, type: 3}
-  m_Name: Ruffian
+  m_Script: {fileID: 11500000, guid: bfc2a33c2256e4097adfd2fadb8bf166, type: 3}
+  m_Name: Slimehit
   m_EditorClassIdentifier: 
-  className: Ruffian
-  attacks:
-  - {fileID: 11400000, guid: f17bde42191c9439eb3f3127c964f809, type: 2}
-  - {fileID: 11400000, guid: d6a799d0fdfee4cc6ad1268315573600, type: 2}
+  name: attack
+  placement: 0
+  multiplier: 1
+  startingCooldown: 0
+  cooldown: 0
+  mana: 0
+  animName: attack0
+  desc: 

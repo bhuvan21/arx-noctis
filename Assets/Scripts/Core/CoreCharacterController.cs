@@ -74,7 +74,7 @@ public class CoreCharacterController : MonoBehaviour
 
     private void Start()
     {   
-        currentClass = (BattleClass)Resources.Load("Ruffian");
+        currentClass = (BattleClass)Resources.Load("PlayerObjects/Classes/" + "Ruffian/Ruffian");
     }
 
     // prevents duplicates of the player
@@ -143,6 +143,8 @@ public class CoreCharacterController : MonoBehaviour
 
     public void EndAnimateAttack()
     {
+        print(selectedAttack);
+        print("joemama");
         animator.SetBool(selectedAttack, false);
         movingFromAttack = true;
 
@@ -369,7 +371,7 @@ public class CoreCharacterController : MonoBehaviour
             yield return null;
         }
         transform.position = GameObject.Find("PlayerSpot").transform.position;
-        GameObject myPrefab = Resources.Load("Prefabs/" + enemyName.Replace(" ", ""), typeof(GameObject)) as GameObject;
+        GameObject myPrefab = Resources.Load("Prefabs/Monsters/" + enemyName.Replace(" ", ""), typeof(GameObject)) as GameObject;
         GameObject enemy = Instantiate(myPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         enemy.transform.position = GameObject.Find("EnemySpot").transform.position;
         enemy.transform.parent = GameObject.Find("EnemySpot").transform;

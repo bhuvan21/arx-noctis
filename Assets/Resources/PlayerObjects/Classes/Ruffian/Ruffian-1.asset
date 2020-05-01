@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfc2a33c2256e4097adfd2fadb8bf166, type: 3}
-  m_Name: Ruffian-7
+  m_Name: Ruffian-1
   m_EditorClassIdentifier: 
-  name: Kick
-  placement: -7
-  multiplier: 1.5
-  startingCooldown: 0
-  cooldown: 2
-  mana: 10
-  animName: player_kick
-  desc: Vicious kick, 150% Dmg
+  name: Jump Kick
+  placement: -1
+  multiplier: 2
+  startingCooldown: 4
+  cooldown: 4
+  mana: 20
+  animName: ruffianAttackL1
+  desc: Big Kick, Big Cost

@@ -8,6 +8,7 @@ public class SetupManager : MonoBehaviour
     public GameObject enemyBar1;
     public GameObject enemyBar2;
     public GameObject enemyname;
+    public GameObject enemyInfo;
 
 
     // Start is called before the first frame update
@@ -16,6 +17,7 @@ public class SetupManager : MonoBehaviour
         hackyHide(enemyBar1);
         hackyHide(enemyBar2);
         hackyHide(enemyname);
+        hackyHide(enemyInfo);
     }
 
     void hackyHide(GameObject obj)

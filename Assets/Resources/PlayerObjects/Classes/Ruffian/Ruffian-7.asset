@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfc2a33c2256e4097adfd2fadb8bf166, type: 3}
-  m_Name: Slimehit
+  m_Name: Ruffian-7
   m_EditorClassIdentifier: 
-  name: attack
-  placement: 0
-  multiplier: 1
+  name: Kick
+  placement: -7
+  multiplier: 1.25
   startingCooldown: 0
-  cooldown: 0
-  mana: 0
-  animName: attack0
+  cooldown: 2
+  mana: 10
+  animName: player_kick
+  desc: Vicious kick, 125% Dmg
