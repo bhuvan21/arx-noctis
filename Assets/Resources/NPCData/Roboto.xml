@@ -7,10 +7,10 @@
     Hey there! I'm a test NPC. Hopefully, you're reading this right now.
    </Line>
    <Line>
-    This is my second line. Epic win!
+    This is my second line of text!
    </Line>
    <Menu level="2">
-    <Line>So this is another menu gang!</Line>
+    <Line>So this is another menu!</Line>
     <Button text="More Talk">
      <Line>Epic!?</Line>
      <Return back="1"></Return>
@@ -22,13 +22,13 @@
   </Button>
   <Button text="What is this?">
    <Line>This is a game called 'arx noctis'. That's latin for fortress of the night. This game is currently EXTREMELY under development.</Line>
-   <Line>This means there are probably many bugs, and unimplemented features. This game is a turn-based RPG. To test the battle system, head into the building on the right.</Line>
+   <Line>This means there are probably many bugs, and unimplemented features. This game is a turn-based RPG. To test the battle system, try my test quest!.</Line>
    <Menu level="2">
     <Line>Click any of the following buttons to learn more about this game.</Line>
     <Button text="Weapons?">
      <Line>One of the ways in which you can do more damage in battle, is by using better weapons.</Line>
      <Line>Weapons have a damage range which determines the base damage they do.</Line>
-     <Line>They also have an element (though this is currently not shown to players yet)</Line>
+     <Line>They also have an element</Line>
      <Line>The element of the weapon you use does have an effect on damage you do, depending on the resistances of the opponent. Read more about this under 'Battle System?'</Line>
      <Line>Weapons can only be equipped if you meet their level requirement.</Line>
      <Line>That is, once I implement that feature. I'll do it. Eventually.</Line>
@@ -39,7 +39,7 @@
      <Line>Battles are an integral part of this game. Your damage is affected by your weapon, enemy resistances, and your stats. These stats can be trained (not yet though)</Line>
      <Line>Weapons can also give you stat boosts, and boosts to your resistances. There are 6 stats, which have different effects on your combat ability.</Line>
      <Line>Endurance boosts HP, wisdom boosts MP. Power boosts damage, luck boosts critical/evade chance. Immunity boosts resistances to DoTs, and Recovery boosts healing.</Line>
-     <Line>The other important thing in battle is choosing which skills to use. I've not made many, there are like two right now, but oh well.</Line>
+     <Line>The other important thing in battle is choosing which skills to use. I've not made many, there are like three right now, but oh well.</Line>
      <Return back="1"></Return>
     </Button>
     <Button text="Location??">
