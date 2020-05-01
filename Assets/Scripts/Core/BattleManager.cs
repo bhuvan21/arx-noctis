@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+
 public class BattleManager : MonoBehaviour
 {
     public GameObject player;
@@ -271,57 +272,12 @@ public class BattleManager : MonoBehaviour
         // Use weapon to get random base damage
         int max = player.GetComponent<CoreCharacterController>().statMaximum;
         Weapon weapon = player.GetComponent<InventoryManager>().currentWeapon;
-        int baseDamage = Random.Range(weapon.minimum, weapon.maximum + 1);
-        float modified = baseDamage * playerAttack.multiplier;
 
-        // Apply power modifier
-        modified = modified * (1.0f + (player.GetComponent<InventoryManager>().getStat("power") / max * 2.0f));
+        DamageInstance dmg =  CalculateDamage(max, weapon, playerAttack, true, enemy.GetComponent<Enemy>().resistances);
 
-        // Delete previous damage indicators
-        GameObject enemySpot = GameObject.Find("EnemyDamageSpot");
-        foreach (Transform child in enemySpot.transform)
-        {
-            Destroy(child.gameObject);
-        }
+        CreateDamageIndicator(dmg.value, true, dmg.critical);
 
-        // Create damage indicator
-        GameObject myPrefab = Resources.Load("Prefabs/Damage", typeof(GameObject)) as GameObject;
-        GameObject damage = Instantiate(myPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        damage.transform.position = enemySpot.transform.position;
-        damage.transform.position = new Vector3(enemySpot.transform.position.x+Random.Range(-0.5f, 0.5f), enemySpot.transform.position.y + Random.Range(-0.5f, 0.5f), -5);
-        damage.layer = 5;
-        damage.transform.parent = canvas.transform;
-        //NEEDS TO BE FIXED
-        damage.transform.position = new Vector3(500, 500, -5);
-        damage.GetComponent<TextMesh>().characterSize = 100.5f;
-        damage.GetComponent<MeshRenderer>().sortingLayerID = 5;
-
-        // Check if critical, and apply crit modifier
-        int criticalRoll = Random.Range(0, 100);
-        if (criticalRoll <= (float)player.GetComponent<InventoryManager>().getStat("luck") / 200.0f*40.0f)
-        {
-            float criticalModifier = (((float)player.GetComponent<InventoryManager>().getStat("power") / 200.0f) * 1.75f) + 1.75f;
-            modified = modified * criticalModifier;
-            damage.GetComponent<TextMesh>().characterSize = 1.0f;
-        }
-
-        // Apply enemy resistances
-        foreach (Armour.Resistance resist in enemy.GetComponent<Enemy>().resistances)
-        {
-            if (resist.name == player.GetComponent<InventoryManager>().currentWeapon.element && resist.value != 0)
-            {
-                modified = modified * (1.0f - ((float)resist.value / 100.0f));
-            }
-        }
-
-        int final = Mathf.CeilToInt(modified);
-        damage.GetComponent<TextMesh>().text = final.ToString();
-
-        audio.Play();
-
-        Destroy(damage, 0.25f);
-
-        enemy.GetComponent<Enemy>().currentHealth -= final;
+        enemy.GetComponent<Enemy>().currentHealth -= dmg.value;
         if (enemy.GetComponent<Enemy>().currentHealth <=0)
         {
             enemy.GetComponent<Enemy>().currentHealth = 0;
@@ -337,37 +293,99 @@ public class BattleManager : MonoBehaviour
     public void EnemyDidHit()
     {
         Weapon weapon = enemy.GetComponent<Enemy>().currentWeapon;
-        int baseDamage = Random.Range(weapon.minimum, weapon.maximum + 1);
-        float modified = baseDamage * enemyAttack.multiplier;
-        foreach (Armour.Resistance resist in player.GetComponent<CoreCharacterController>().resistances)
+        DamageInstance dmg = CalculateDamage(player.GetComponent<CoreCharacterController>().statMaximum, weapon, enemyAttack, false, player.GetComponent<CoreCharacterController>().resistances);
+
+        CreateDamageIndicator(dmg.value, false, dmg.critical);
+
+        player.GetComponent<InventoryManager>().currentHealth -= dmg.value;
+        UpdatePointBars();
+    }
+
+    public void CreateDamageIndicator(int dmg, bool isPlayer, bool critical)
+    {
+        GameObject spot;
+
+        // Destroy old damage indicators
+        if (isPlayer)
         {
-            if (resist.name == enemy.GetComponent<Enemy>().currentWeapon.element && resist.value != 0)
+            spot = GameObject.Find("PlayerDamageSpot");
+        }
+        else
+        {
+            spot = GameObject.Find("EnemyDamageSpot");
+        }
+        
+        foreach (Transform child in spot.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        GameObject myPrefab = Resources.Load("Prefabs/DamageIndicator", typeof(GameObject)) as GameObject;
+        GameObject damage = Instantiate(myPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        damage.transform.position = new Vector3(spot.transform.position.x + Random.Range(50, 50), spot.transform.position.y + Random.Range(50, 50), 0);
+        damage.layer = 5;
+        damage.gameObject.transform.SetParent(canvas.transform);
+        damage.GetComponent<TextMeshProUGUI>().text = dmg.ToString();
+
+        if (critical)
+        {
+            damage.GetComponent<TextMeshProUGUI>().fontSize = damage.GetComponent<TextMeshPro>().fontSize * 2.0f;
+        }
+
+        audio.Play();
+        Destroy(damage, 0.25f);
+    }
+
+
+    public DamageInstance CalculateDamage (int statMax, Weapon weapon, Attack attack, bool isPlayer, List<Armour.Resistance> res)
+    {
+        DamageInstance dmg = new DamageInstance();
+
+
+        int power;
+        int luck;
+        if (isPlayer)
+        {
+            power = player.GetComponent<InventoryManager>().getStat("power");
+            luck = player.GetComponent<InventoryManager>().getStat("luck");
+
+        }
+        else
+        {
+            power = enemy.GetComponent<Enemy>().power;
+            luck = enemy.GetComponent<Enemy>().luck;
+        }
+
+        int baseDamage = Random.Range(weapon.minimum, weapon.maximum + 1);
+        float modified = baseDamage * attack.multiplier;
+
+        // Apply power modifier
+        modified = modified * (1.0f + (power / statMax * 2.0f));
+
+        dmg.critical = false;
+        dmg.element = weapon.element;
+
+        // Check if critical, and apply crit modifier
+        int criticalRoll = Random.Range(0, 100);
+        if (criticalRoll <= (float)luck / 200.0f * 40.0f)
+        {
+            float criticalModifier = (((float)power / 200.0f) * 1.75f) + 1.75f;
+            modified = modified * criticalModifier;
+            dmg.critical = true;
+        }
+
+        // Apply enemy resistances
+        foreach (Armour.Resistance resist in res)
+        {
+            if (resist.name == weapon.element && resist.value != 0)
             {
                 modified = modified * (1.0f - ((float)resist.value / 100.0f));
             }
         }
 
         int final = Mathf.CeilToInt(modified);
-
-        // Delete previous damage indicators
-        GameObject playerSpot = GameObject.Find("PlayerDamageSpot");
-        foreach (Transform child in playerSpot.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        GameObject myPrefab = Resources.Load("Prefabs/Damage", typeof(GameObject)) as GameObject;
-        GameObject damage = Instantiate(myPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        damage.transform.position = GameObject.Find("PlayerDamageSpot").transform.position;
-        damage.transform.position = new Vector3(playerSpot.transform.position.x + Random.Range(-0.5f, 0.5f), playerSpot.transform.position.y + Random.Range(-0.5f, 0.5f), -5);
-        damage.layer = 5;
-        damage.GetComponent<TextMesh>().text = final.ToString();
-        damage.GetComponent<TextMesh>().characterSize = 0.5f;
-        audio.Play();
-        Destroy(damage, 0.25f);
-
-        player.GetComponent<InventoryManager>().currentHealth -= final;
-        UpdatePointBars();
+        dmg.value = final;
+        return dmg;
     }
 
     public void EnemyDead()
@@ -384,10 +402,10 @@ public class BattleManager : MonoBehaviour
         scroll.transform.Find("Description").GetComponent<Renderer>().sortingOrder = 1000;
         scroll.transform.position = new Vector3(0, 0, 0);
         myPrefab = Resources.Load("Prefabs/MenuButton", typeof(GameObject)) as GameObject;
-        GameObject button = Instantiate(myPrefab, Camera.main.WorldToScreenPoint(new Vector3(0, -3, 0)), Quaternion.identity);
+        GameObject button = Instantiate(myPrefab, Camera.main.WorldToScreenPoint(new Vector3(0, -2, 0)), Quaternion.identity);
         button.transform.Find("Text").GetComponent<Text>().text = "OK";
         button.transform.parent = GameObject.Find("Canvas").transform;
-        button.transform.localScale = new Vector3(1, 1, 1);
+        button.transform.localScale = new Vector3(.5f, .5f, .5f);
 
         placeID = enemy.GetComponent<Enemy>().placeholderID;
         Destroy(enemy);
@@ -400,7 +418,6 @@ public class BattleManager : MonoBehaviour
 
     void ExitBattle()
     {
-       
         player.GetComponent<CoreCharacterController>().inBattle = false;
         player.GetComponent<CoreCharacterController>().EndBattle(placeID);
         CleanUp();
@@ -465,4 +482,11 @@ public class BattleManager : MonoBehaviour
         return enemy.GetComponent<Enemy>().level * 5;
     }
 
+}
+
+public class DamageInstance
+{
+    public bool critical;
+    public int value;
+    public string element;
 }

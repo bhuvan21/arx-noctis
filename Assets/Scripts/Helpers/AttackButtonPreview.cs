@@ -25,7 +25,10 @@ public class AttackButtonPreview : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
-        drawPopup(attackName, attackDesc);
+        if (attackName != "")
+        {
+            drawPopup(attackName, attackDesc);
+        }
     }
 
     public void OnPointerExit(PointerEventData pointerEventData)
