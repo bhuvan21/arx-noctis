@@ -190,21 +190,14 @@ public class BattleManager : MonoBehaviour
     {
 
         Attack[] attacks = enemy.GetComponent<Enemy>().currentClass.attacks;
-        for (int i = 0; i < attacks.Length; i++)
-        {
-            Attack attack = attacks[i]; ;
-            if (attack.placement == 0)
-            {
-                enemyAttack = attack;
-            }
-        }
         enemyAttack = attacks[Random.Range(0, attacks.Length - 1)];
-        enemy.GetComponent<Enemy>().MoveToAttack();
+        //enemy.GetComponent<Enemy>().MoveToAttack();
+        EnemyMovedToAttack();
     }
 
     public void EnemyMovedToAttack()
     {
-        enemy.GetComponent<Enemy>().AnimateAttack(0);
+        enemy.GetComponent<Enemy>().AnimateAttack(Random.Range(0, enemy.GetComponent<Enemy>().currentClass.attacks.Length - 1));
     }
 
     // run at the end of each turn
@@ -267,7 +260,8 @@ public class BattleManager : MonoBehaviour
                     playerAttack = attack;
                     player.GetComponent<InventoryManager>().currentMana -= attack.mana;
                     UpdatePointBars();
-                    player.GetComponent<CoreCharacterController>().MoveToAttack();
+                    //player.GetComponent<CoreCharacterController>().MoveToAttack();
+                    PlayerMovedToAttack();
                 }
             }
         }

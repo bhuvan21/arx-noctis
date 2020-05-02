@@ -143,11 +143,10 @@ public class CoreCharacterController : MonoBehaviour
 
     public void EndAnimateAttack()
     {
-        print(selectedAttack);
-        print("joemama");
         animator.SetBool(selectedAttack, false);
-        movingFromAttack = true;
+        //movingFromAttack = true;
 
+        /*
         battleMovingTo = GameObject.Find("PlayerSpot").transform.position;
         battleMovingFrom = GameObject.Find("EnemySpot").transform.position;
         battleMovingFrom = new Vector2(battleMovingFrom.x - 2.5f, battleMovingFrom.y);
@@ -155,6 +154,8 @@ public class CoreCharacterController : MonoBehaviour
         Vector3 originalScale = transform.localScale;
         transform.localScale = new Vector3(Mathf.Abs(originalScale.x)*-1, originalScale.y, originalScale.z);
         animator.SetBool("running", true);
+        */
+        battleManager.PlayerMovedFromAttack();
     }
 
     public void DoHit()

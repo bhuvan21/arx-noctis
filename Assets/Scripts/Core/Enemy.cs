@@ -143,6 +143,7 @@ public class Enemy : MonoBehaviour
     {
         animatingAttack = false;
         animator.SetBool("attack" + selectedAttack.ToString(), false);
+        /*
         movingFromAttack = true;
         battleMovingFrom = GameObject.Find("PlayerSpot").transform.position;
         battleMovingTo = GameObject.Find("EnemySpot").transform.position;
@@ -151,6 +152,8 @@ public class Enemy : MonoBehaviour
         Vector3 originalScale = transform.localScale;
         transform.localScale = new Vector3(Mathf.Abs(originalScale.x) * -1, originalScale.y, originalScale.z);
         animator.SetBool("running", true);
+        */
+        battleManager.EnemyMovedFromAttack();
     }
 
     public void DoHit()

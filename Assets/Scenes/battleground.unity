@@ -3457,6 +3457,7 @@ MonoBehaviour:
   enemyHealthBar: {fileID: 0}
   enemyManaBar: {fileID: 0}
   enemyName: {fileID: 0}
+  enemyInfo: {fileID: 0}
 --- !u!4 &962579711
 Transform:
   m_ObjectHideFlags: 0

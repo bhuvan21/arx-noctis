@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Jump Kick
   placement: -1
   multiplier: 2
-  startingCooldown: 4
+  startingCooldown: 0
   cooldown: 4
   mana: 20
   animName: ruffianAttackL1
