@@ -18,5 +18,5 @@ MonoBehaviour:
   startingCooldown: 0
   cooldown: 2
   mana: 10
-  animName: player_kick
+  animName: RuffianL7
   desc: Vicious kick, 125% Dmg

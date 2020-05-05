@@ -120,7 +120,7 @@ public class BattleManager : MonoBehaviour
         enemy.GetComponent<Enemy>().inBattle = true;
 
         oldScale = player.transform.localScale;
-        player.transform.localScale = new Vector3(1, 1, 1);
+        player.transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
         BattleClass playerClass = player.GetComponent<CoreCharacterController>().currentClass;
 
         // update the attack buttons for the player's class

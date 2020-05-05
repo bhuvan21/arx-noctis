@@ -180,7 +180,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -99
   m_Sprite: {fileID: 21300000, guid: 691d5ee766ab244f1874bc8c60fcc881, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -703,8 +703,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionType: location
   sceneName: oaklore_center
-  goTo: {x: -4.5, y: -2.7}
-  scaleTo: {x: 0.3, y: 0.3, z: 1}
+  goTo: {x: -3, y: -2.5}
+  scaleTo: {x: 0.1, y: 0.1, z: 1}
 --- !u!1 &2110360983
 GameObject:
   m_ObjectHideFlags: 0

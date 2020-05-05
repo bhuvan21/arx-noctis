@@ -70,7 +70,7 @@ public class CoreCharacterController : MonoBehaviour
     Vector3 oldScale;
 
     public GameObject head;
-
+    public GameObject skeleton;
 
     private void Start()
     {   
@@ -216,13 +216,13 @@ public class CoreCharacterController : MonoBehaviour
             }
         }
 
-        // i have no idea what this does but it's movement related
+        // i have no idea what this does but it's movement related!
         if (mouseDown && canMove && !EventSystem.current.IsPointerOverGameObject())
         {
             unstickMovement = true;
-            movePercentage = 0;
+            movePercentage = 0.000001f;
             movingFrom = transform.position;
-            movingTo = Camera.main.ScreenToWorldPoint(mousePos);
+            movingTo = Camera.main.ScreenToWorldPoint(mousePos) + new Vector3(0, 0.75f, 0);
             Vector3 originalScale = transform.localScale;
             Vector3 newScale = new Vector3(Mathf.Abs(originalScale.x), originalScale.y, originalScale.z);
             if (movingTo.x < movingFrom.x)
@@ -278,7 +278,7 @@ public class CoreCharacterController : MonoBehaviour
                 GameObject button = Instantiate(myPrefab, Camera.main.WorldToScreenPoint(new Vector3(0, -3, 0)), Quaternion.identity);
                 button.transform.Find("Text").GetComponent<Text>().text = "Close";
                 button.transform.parent = GameObject.Find("Canvas").transform;
-                button.transform.localScale = new Vector3(1, 1, 1);
+                button.transform.localScale = new Vector3(1 , 1, 1);
                 button.GetComponent<Button>().onClick.AddListener(() => EndQuest(col));
                 button.GetComponent<Button>().onClick.AddListener(() => Destroy(scroll));
                 button.GetComponent<Button>().onClick.AddListener(() => Destroy(button));
@@ -398,6 +398,7 @@ public class CoreCharacterController : MonoBehaviour
             string raw = PlayerPrefs.GetString("characterAppearance");
             string[] colorNames = raw.Split('/');
             List<string> rawColors = new List<string>();
+            List<Color> tests = new List<Color>() { new Color(1,0, 0), new Color(0, 1, 0), new Color(0, 0, 1)};
             foreach (string color in colorNames)
             {
                 rawColors.Add(color);
@@ -405,18 +406,29 @@ public class CoreCharacterController : MonoBehaviour
             rawColors.Insert(0, rawColors[0]);
             List<Color> colors = new List<Color>();
             int i = 0;
-            List<string> objectNames = new List<string>() { "face", "ear", "hair", "pupil" };
+            List<string> objectNames = new List<string>() { "ear", "hair", "pupil" };
+
             foreach (string colorName in rawColors)
             {
-                int red = int.Parse(colorName.Substring(0, 3));
-                int green = int.Parse(colorName.Substring(3, 3));
-                int blue = int.Parse(colorName.Substring(6, 3));
-                Color color = new Color(red / 256.0f, green / 256.0f, blue / 256.0f);
+                if (i != 3)
+                {
+                    int red = int.Parse(colorName.Substring(0, 3));
+                    int green = int.Parse(colorName.Substring(3, 3));
+                    int blue = int.Parse(colorName.Substring(6, 3));
+                    Color color = new Color(red / 256.0f, green / 256.0f, blue / 256.0f);
 
-                head.transform.Find(objectNames[i]).gameObject.GetComponent<SpriteRenderer>().color = color;
-
-                i++;
+                    head.transform.Find(objectNames[i]).gameObject.GetComponent<SpriteRenderer>().color = color;
+                    if (i == 0)
+                    {
+                        print(i);
+                        print(color);
+                        skeleton.GetComponent<SpriteRenderer>().color = color;
+                    }
+                    i++;
+                }
+                
             }
+            
         }
         
     }

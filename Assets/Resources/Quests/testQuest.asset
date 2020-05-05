@@ -17,6 +17,6 @@ MonoBehaviour:
   questDesc: This is a simple test quest. A testing of the questing. A ... testeroo
     of the questeroo. Yeah. Pretty standard stuff.
   entryPoint: {x: -5, y: -2, z: 0}
-  entryScale: {x: 0.3, y: 0.3, z: 1}
+  entryScale: {x: 0.1, y: 0.1, z: 0.1}
   drops:
   - {fileID: 11400000, guid: f9d6d6b553b174eef924a72a57883186, type: 2}
