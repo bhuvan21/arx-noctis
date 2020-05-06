@@ -7,6 +7,7 @@ using System.IO;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class CoreCharacterController : MonoBehaviour
 {
@@ -75,6 +76,7 @@ public class CoreCharacterController : MonoBehaviour
     private void Start()
     {   
         currentClass = (BattleClass)Resources.Load("PlayerObjects/Classes/" + "Ruffian/Ruffian");
+        //this.gameObject.GetComponent<ShadowCaster2D>().
     }
 
     // prevents duplicates of the player
@@ -222,6 +224,7 @@ public class CoreCharacterController : MonoBehaviour
             unstickMovement = true;
             movePercentage = 0.000001f;
             movingFrom = transform.position;
+            print(Camera.main.ScreenToWorldPoint(mousePos));
             movingTo = Camera.main.ScreenToWorldPoint(mousePos) + new Vector3(0, 0.75f, 0);
             Vector3 originalScale = transform.localScale;
             Vector3 newScale = new Vector3(Mathf.Abs(originalScale.x), originalScale.y, originalScale.z);
