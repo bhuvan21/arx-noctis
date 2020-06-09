@@ -1,12 +1,13 @@
 # arx-noctis
 A game I'm making - inspired by older RPGs.
-Arx noctis means 'Citadel of Night' which just sounds cool because it's Latin, and has no bearing on the game's content currently. The game can be played at : https://bhuvan21.github.io/arx-noctis-release/  
+Arx noctis means 'Citadel of Night' which just sounds cool because it's Latin, and has no bearing on the game's content currently.  
+The game can be played at : https://bhuvan21.github.io/arx-noctis-release/  
 Please file any bugs and feature requests under issues! I'll get to them ASAP (maybe)  
 This game is written using Unity, and is currently playable online via Unity WebGL, but at some point native releases will be available here.  
 
 
 ## Progress
-======
+------
 
 ### Battle Engine Features
 - [X] Battle Classes
