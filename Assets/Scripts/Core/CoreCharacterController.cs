@@ -225,7 +225,7 @@ public class CoreCharacterController : MonoBehaviour
             movePercentage = 0.000001f;
             movingFrom = transform.position;
             print(Camera.main.ScreenToWorldPoint(mousePos));
-            movingTo = Camera.main.ScreenToWorldPoint(mousePos) + new Vector3(0, 0.75f, 0);
+            movingTo = Camera.main.ScreenToWorldPoint(mousePos) - GameObject.Find("Base").transform.position + transform.position;
             Vector3 originalScale = transform.localScale;
             Vector3 newScale = new Vector3(Mathf.Abs(originalScale.x), originalScale.y, originalScale.z);
             if (movingTo.x < movingFrom.x)

@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<NPC name= "Joe">
+ <Menu level="1">
+  <Line>Mm, [playerName]. Always a pleasure.</Line>
+  <Button text="Who're You?">
+   <Line>Name's Joe. Just Joe, I run the inn here.</Line>
+   <Line>Used to be a miner around here, till my joints got a little too old for all that.</Line>
+   <Line>Now I manage the inn here, letting travelling folk rest up, though I'll admit we don't get too many up here.</Line>
+   <Return back="1"></Return>
+  </Button>
+   
+  <Button text="Information?">
+   <Line>Sure, ask away? I'll do my best to answer your questions.</Line>
+   <Menu level="2">
+    <Line>Sure, ask away? I'll do my best to answer your questions.</Line>
+    <Button text="Where Am I?">
+     <Line>You're in Alteror, traveller. Miner's Paradise.</Line>
+     <Line>Lovely place - I think at least. Though a little, boring, at times.</Line>
+     <Return back="1"></Return>
+    </Button>
+    <Button text="That Scar?">
+     <Line>Oh this old thing? Just an old scrap in my youth.</Line>
+     <Line>Friend of mine stepped way out of line, and we had a bit of a disagreement. Nothing too interesting!</Line>
+     <Return back="1"></Return>
+    </Button>
+    <Button text="Mining?">
+     <Line>Alteror's the mining hub for our kingdom. Up at the top of this mountain, you'd think it'd be an odd place for a mining village.</Line>
+     <Line>Legend has it that peak was blessed by an ancient god, leaving the whole mountain laded with precious gems and the like.</Line>
+      <Line>There's a mine shaft right down the center of the mountain - real scary mess of caverns and tunnels.</Line>
+     <Return back="1"></Return>
+    </Button>
+    <Button text="Temple?">
+       <Line>Yeah, we have a small temple at the peak of the mountain. Dedicated to the mining god, though nobody knows their name anymore.</Line>
+       <Line>I don't think it's open right now, but I have heard some odd rumors about spooky lighting coming from there at night.</Line>
+       <Return back="1"></Return>
+    </Button>
+    <Button text="Your Clothing?">
+      <Line>Ah, right. I guess I do stand out a little with these on. They're from one of the larger towns, Kholin.</Line>
+      <Line>Things are very different down there, off this mountain. Not many here have ever left.</Line>
+      <Return back="1"></Return>
+    </Button>
+    <Button text="Back">
+     <Return back="2"></Return>
+    </Button>
+   </Menu>
+  </Button>
+  
+  <Button text="Heal">
+   <Heal></Heal>
+  </Button>
+  <Button text="Exit">
+   <Exit></Exit>
+  </Button>
+ </Menu>
+</NPC>
