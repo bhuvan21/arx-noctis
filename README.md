@@ -29,28 +29,28 @@ This game is written using Unity, and is currently playable online via Unity Web
 - [X] Basic Secure Login System
 - [X] Proper Player 2D Lighting
 - [X] Player and Enemy Info Viewer
+- [X] Shops
 
 
 
 ### Todo Small (ish) Features!
 ------
-- [ ] Quest Rewards
-- [ ] Shops
-- [ ] Merge Shops
-- [ ] Currency
-- [ ] Level Ups
-- [ ] Stat Training
-- [ ] Some Music
-- [ ] Home Town
-- [ ] Save Equips and Classes
-- [ ] Visually customiseable characters - half done, need to add hairstyles and faces types
+- [ ] Quest Rewards  
+- [ ] Merge Shops  
+- [ ] Currency  
+- [ ] Level Ups  
+- [ ] Stat Training  
+- [ ] Some Music  
+- [ ] Home Town  
+- [ ] Save Equips and Classes  
+- [ ] Visually customiseable characters - better selections, more features and body types  
 
 ### Todo Larger Features!
 ------
 - [ ] Persisting Inventory
 - [ ] Cutscenes
 - [ ] 3 Base Classes
-- [ ] Multiple Characters per Account?
+- [ ] Multiple Characters per Account? Not really necessary  
 
 ### Todo Longer Term (Prettiness)!
 ------
