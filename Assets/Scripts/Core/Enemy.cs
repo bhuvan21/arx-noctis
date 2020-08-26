@@ -155,7 +155,7 @@ public class Enemy : MonoBehaviour
         transform.localScale = new Vector3(Mathf.Abs(originalScale.x) * -1, originalScale.y, originalScale.z);
         animator.SetBool("running", true);
         
-        battleManager.EnemyMovedFromAttack();
+        //battleManager.EnemyMovedFromAttack();
     }
 
     public void DoHit()

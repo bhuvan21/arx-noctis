@@ -132,7 +132,6 @@ public class BattleManager : MonoBehaviour
     {
 
         refreshSecondaryStats();
-        applyEffect("TestBoost", true);
 
         // get the display bars and show them
         playerHealthBar = GameObject.Find("Healthbar");
@@ -310,6 +309,12 @@ public class BattleManager : MonoBehaviour
                 if (player.GetComponent<InventoryManager>().currentMana >= attack.mana)
                 {
                     HideButtons();
+
+                    for(int k = 0; k < attack.myEffects.Count; k++)
+                    {
+                        applyEffect(attack.myEffects[k], true);
+                    }
+
                     playerAttack = attack;
                     player.GetComponent<InventoryManager>().currentMana -= attack.mana;
                     UpdatePointBars();
@@ -609,12 +614,13 @@ public class BattleManager : MonoBehaviour
     }
 
 
-    void applyEffect(string path, bool toPlayer)
+    void applyEffect(StatusEffect effect, bool toPlayer)
     {
-        StatusEffect effect = ((StatusEffect)Resources.Load("StatusEffects/" + path));
+        effect = Instantiate(effect);
         if (toPlayer)
         {
             pEffects.Add(effect);
+            print("TURNS HK!!: " + effect.turns.ToString());
             pCritMod += effect.crit;
             pBTHMod += effect.bth;
             pDefenseMod += effect.defense;
@@ -665,7 +671,7 @@ public class BattleManager : MonoBehaviour
 
             effect.turns = effect.turns - 1;
             pEffects[i] = effect;
-
+            print("TURNS OK!!: " + effect.turns.ToString());
             if (effect.turns == 0)
             {
                 pEffects.Remove(effect);

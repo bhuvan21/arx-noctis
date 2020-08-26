@@ -15,4 +15,6 @@ public class Attack : ScriptableObject
     public int mana;
     public string animName;
     public string desc;
+    public List<StatusEffect> myEffects;
+    public List<StatusEffect> theirEffects;
 }
