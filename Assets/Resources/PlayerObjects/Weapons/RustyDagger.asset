@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: weapon
   displayType: Dagger
+  price: 200
   sellback: 100
+  sellable: 1
   displayName: Rusty Daggers
   level: 1
   description: These are a pair of rusty daggers. Or are they the unwashed kitchen

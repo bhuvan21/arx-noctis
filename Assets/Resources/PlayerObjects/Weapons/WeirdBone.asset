@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: weapon
   displayType: Sword
+  price: 150
   sellback: 50
+  sellable: 1
   displayName: Weird Bone
   level: 1
   description: A weird bone from the graveyard. Maybe there's a little necromantic

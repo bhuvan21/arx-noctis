@@ -53,7 +53,7 @@ public class NPC : MonoBehaviour
 
             if (i != 0)
             {
-                if (child.Name == "Button" || child.Name == "Quest")
+                if (child.Name == "Button" || child.Name == "Quest" || child.Name == "Shop")
                 {
                     GameObject myPrefab = Resources.Load("Prefabs/MenuButton", typeof(GameObject)) as GameObject;
                     GameObject button = Instantiate(myPrefab, realMenuPoint, Quaternion.identity);
@@ -107,6 +107,12 @@ public class NPC : MonoBehaviour
                 exitNPC();
                 return;
             }
+            else if (node.ChildNodes[0].Name == "Shop")
+            {
+                handleShop(node.ChildNodes[0]);
+                HandleMenu(node.ParentNode);
+                return;
+            }
             XmlNode parent = node.ChildNodes[0];
             int levels;
             int.TryParse(node.ChildNodes[0].Attributes[0].Value, out levels);
@@ -116,6 +122,11 @@ public class NPC : MonoBehaviour
             }
             HandleMenu(parent);
         }
+    }
+
+    void handleShop(XmlNode node)
+    {
+        player.GetComponent<InventoryManager>().openShop(node.Attributes[0].Value);
     }
 
     IEnumerator WaitForClick(XmlNode node)

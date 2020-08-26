@@ -112,7 +112,15 @@ public class StatDisplayManager : MonoBehaviour
         RESIST.GetComponent<Text>().text = "";
         foreach(Armour.Resistance res in this.gameObject.GetComponent<CoreCharacterController>().resistances)
         {
-            RESIST.GetComponent<Text>().text += char.ToUpper(res.name[0]) + res.name.Substring(1) + " " + res.value.ToString() + "\n";
+            if (res.value != 0)
+            {
+                RESIST.GetComponent<Text>().text += char.ToUpper(res.name[0]) + res.name.Substring(1) + " " + res.value.ToString() + "\n";
+            }
+        }
+
+        foreach(StatusEffect eff in this.gameObject.GetComponent<InventoryManager>().pEffects)
+        {
+            RESIST.GetComponent<Text>().text += eff.description + "\n";
         }
 
     }
@@ -155,6 +163,11 @@ public class StatDisplayManager : MonoBehaviour
         foreach (Armour.Resistance res in enemy.resistances)
         {
             RESIST.GetComponent<Text>().text += res.name + " " + res.value.ToString() + "\n";
+        }
+
+        foreach (StatusEffect eff in this.gameObject.GetComponent<InventoryManager>().eEffects)
+        {
+            RESIST.GetComponent<Text>().text += eff.description + "\n";
         }
     }
 

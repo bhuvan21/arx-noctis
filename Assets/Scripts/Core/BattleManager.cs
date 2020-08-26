@@ -55,6 +55,55 @@ public class BattleManager : MonoBehaviour
 
     string placeID;
 
+
+    int pCrit;
+    int pBTH;
+    int pDefense;
+    int eCrit;
+    int eBTH;
+    int eDefense;
+
+    int pCritMod = 0;
+    int pBTHMod = 0;
+    int pDefenseMod = 0;
+    int eCritMod = 0;
+    int eBTHMod = 0;
+    int eDefenseMod = 0;
+
+    int pBoost = 1;
+    int eBoost = 1;
+
+    List<StatusEffect> pEffects = new List<StatusEffect>();
+    List<StatusEffect> eEffects = new List<StatusEffect>();
+
+
+    public List<Armour.Resistance> pResistancesMod = new List<Armour.Resistance>
+    {
+        new Armour.Resistance("fire", 0),
+        new Armour.Resistance("water", 0),
+        new Armour.Resistance("darkness", 0),
+        new Armour.Resistance("light", 0),
+        new Armour.Resistance("wind", 0),
+        new Armour.Resistance("stone", 0),
+        new Armour.Resistance("ice", 0),
+        new Armour.Resistance("nature", 0),
+        new Armour.Resistance("metal", 0),
+    };
+
+    public List<Armour.Resistance> eResistancesMod = new List<Armour.Resistance>
+    {
+        new Armour.Resistance("fire", 0),
+        new Armour.Resistance("water", 0),
+        new Armour.Resistance("darkness", 0),
+        new Armour.Resistance("light", 0),
+        new Armour.Resistance("wind", 0),
+        new Armour.Resistance("stone", 0),
+        new Armour.Resistance("ice", 0),
+        new Armour.Resistance("nature", 0),
+        new Armour.Resistance("metal", 0),
+    };
+
+
     // reset all the cooldowns
     void CleanUp()
     {
@@ -81,6 +130,10 @@ public class BattleManager : MonoBehaviour
 
     public void StartBattle()
     {
+
+        refreshSecondaryStats();
+        applyEffect("TestBoost", true);
+
         // get the display bars and show them
         playerHealthBar = GameObject.Find("Healthbar");
         playerManaBar = GameObject.Find("Manabar");
@@ -191,8 +244,8 @@ public class BattleManager : MonoBehaviour
 
         Attack[] attacks = enemy.GetComponent<Enemy>().currentClass.attacks;
         enemyAttack = attacks[Random.Range(0, attacks.Length - 1)];
-        //enemy.GetComponent<Enemy>().MoveToAttack();
-        EnemyMovedToAttack();
+        enemy.GetComponent<Enemy>().MoveToAttack();
+        //EnemyMovedToAttack();
     }
 
     public void EnemyMovedToAttack()
@@ -241,7 +294,7 @@ public class BattleManager : MonoBehaviour
             button.gameObject.transform.Find("Cooldown").GetComponent<Text>().text =playerAttack.cooldown.ToString();
             button.GetComponent<Image>().color = Color.green;
         }
-
+        updateEffects();
         ShowButtons();
     }
 
@@ -278,7 +331,7 @@ public class BattleManager : MonoBehaviour
         {
             DamageInstance dmg = CalculateDamage(max, weapon, playerAttack, true, enemy.GetComponent<Enemy>().resistances);
 
-            CreateDamageIndicator(dmg.value, true, dmg.critical);
+            CreateDamageIndicator(dmg.value, true, dmg.critical, dmg.miss);
 
             enemy.GetComponent<Enemy>().currentHealth = Mathf.Min(enemy.GetComponent<Enemy>().currentHealth - dmg.value, enemy.GetComponent<Enemy>().maxHealth);
 
@@ -296,19 +349,39 @@ public class BattleManager : MonoBehaviour
         
     }
 
+    List<Armour.Resistance> addResistances(List<Armour.Resistance> a, List<Armour.Resistance> b)
+    {
+        List<Armour.Resistance> n = new List<Armour.Resistance>();
+        for (int i = 0; i < a.Count; i++)
+        {
+            for (int j = 0; j < b.Count; j++)
+            {
+                if (a[j].name == b[i].name)
+                {
+                    Armour.Resistance res = new Armour.Resistance(a[j].name, a[j].value + b[i].value);
+                    n.Add(res);
+                }
+            }
+        }
+        return n;
+    }
+
     // where the enemy damage happens (for now) TODO make player and enemy damage the same
     public void EnemyDidHit()
     {
         Weapon weapon = enemy.GetComponent<Enemy>().currentWeapon;
+
+        
+
         DamageInstance dmg = CalculateDamage(player.GetComponent<CoreCharacterController>().statMaximum, weapon, enemyAttack, false, player.GetComponent<CoreCharacterController>().resistances);
 
-        CreateDamageIndicator(dmg.value, false, dmg.critical);
+        CreateDamageIndicator(dmg.value, false, dmg.critical, dmg.miss);
 
         player.GetComponent<InventoryManager>().currentHealth = Mathf.Min(player.GetComponent<InventoryManager>().currentHealth - dmg.value, player.GetComponent<InventoryManager>().maxHealth);
         UpdatePointBars();
     }
 
-    public void CreateDamageIndicator(int dmg, bool isPlayer, bool critical)
+    public void CreateDamageIndicator(int dmg, bool isPlayer, bool critical, bool miss)
     {
         GameObject spot;
 
@@ -334,13 +407,28 @@ public class BattleManager : MonoBehaviour
         damage.gameObject.transform.SetParent(canvas.transform);
         damage.GetComponent<TextMeshProUGUI>().text = dmg.ToString();
 
-        if (critical)
+        if (miss)
+        {
+            damage.GetComponent<TextMeshProUGUI>().text = "Miss";
+        }
+        else if (critical)
         {
             damage.GetComponent<TextMeshProUGUI>().fontSize = damage.GetComponent<TextMeshProUGUI>().fontSize * 2.0f;
         }
 
+
         audio.Play();
         Destroy(damage, 0.25f);
+    }
+
+    void refreshSecondaryStats()
+    {
+        pCrit = (int)(((float)player.gameObject.GetComponent<InventoryManager>().getStat("luck")) / 200.0f * 40.0f);
+        eCrit = (int)(((float)enemy.GetComponent<Enemy>().stats[4].value) / 200.0f * 40.0f);
+        pBTH = (int)(((float)player.gameObject.GetComponent<InventoryManager>().getStat("wisdom")) / 200.0f * 100.0f);
+        eBTH = (int)(((float)enemy.GetComponent<Enemy>().stats[3].value) / 200.0f * 100.0f);
+        pDefense = (int)(((float)player.gameObject.GetComponent<InventoryManager>().getStat("immunity")) / 200.0f * 40.0f);
+        eDefense = (int)(((float)enemy.GetComponent<Enemy>().stats[1].value) / 200.0f * 40.0f);
     }
 
 
@@ -348,51 +436,79 @@ public class BattleManager : MonoBehaviour
     {
         DamageInstance dmg = new DamageInstance();
 
-
+        refreshSecondaryStats();
         int power;
         int luck;
+        int immunity;
+        int defense;
+        int crit;
+        int bth;
+        int boost;
+        List<Armour.Resistance> mods;
+
         if (isPlayer)
         {
             power = player.GetComponent<InventoryManager>().getStat("power");
             luck = player.GetComponent<InventoryManager>().getStat("luck");
-
+            immunity = player.GetComponent<InventoryManager>().getStat("immunity");
+            defense = eDefense + eDefenseMod;
+            crit = pCrit + pCritMod;
+            bth = pBTH + pBTHMod;
+            boost = pBoost;
+            mods = eResistancesMod;
         }
         else
         {
             power = enemy.GetComponent<Enemy>().stats[0].value;
-            print(power);
             luck = enemy.GetComponent<Enemy>().stats[4].value;
+            immunity = enemy.GetComponent<Enemy>().stats[1].value;
+            defense = pDefense + pDefenseMod;
+            crit = eCrit + eCritMod;
+            bth = eBTH + eBTHMod;
+            boost = eBoost;
+            mods = pResistancesMod;
         }
+        
 
         int baseDamage = Random.Range(weapon.minimum, weapon.maximum + 1);
-        float modified = baseDamage * attack.multiplier;
+        print("Weapon DMG:" + baseDamage.ToString());
+        float modified = baseDamage * attack.multiplier * boost;
+        print("Hit+Boost DMG:" + modified.ToString());
 
+        // Check if miss
+        int missRoll = Random.Range(0, 100);
+        print("Defense: " + missRoll.ToString() + "/" + defense.ToString());
+        if (missRoll <= defense - bth)
+        {
+            modified = modified * 0;
+            dmg.miss = true;
+        }
+        print("Miss DMG:" + modified.ToString());
         // Apply power modifier
-        print((1.0f + ((float)power / (float)statMax * 2.0f)));
         modified = modified * (1.0f + ((float)power / (float)statMax * 2.0f));
-
+        print("Power DMG:" + modified.ToString());
 
         dmg.critical = false;
         dmg.element = weapon.element;
 
         // Check if critical, and apply crit modifier
         int criticalRoll = Random.Range(0, 100);
-        if (criticalRoll <= (float)luck / 200.0f * 40.0f)
+        if (criticalRoll <= crit)
         {
             float criticalModifier = (((float)power / 200.0f) * 1.75f) + 1.75f;
             modified = modified * criticalModifier;
             dmg.critical = true;
         }
-
-        // Apply enemy resistances
-        foreach (Armour.Resistance resist in res)
+        print("Critical DMG:" + modified.ToString());
+        // Apply resistances
+        foreach (Armour.Resistance resist in addResistances(res, mods))
         {
             if (resist.name == weapon.element && resist.value != 0)
             {
                 modified = modified * (1.0f - ((float)resist.value / 100.0f));
             }
         }
-
+        print("Resisted DMG:" + modified.ToString());
         int final = Mathf.CeilToInt(modified);
         dmg.value = final;
         return dmg;
@@ -492,6 +608,118 @@ public class BattleManager : MonoBehaviour
         return enemy.GetComponent<Enemy>().level * 5;
     }
 
+
+    void applyEffect(string path, bool toPlayer)
+    {
+        StatusEffect effect = ((StatusEffect)Resources.Load("StatusEffects/" + path));
+        if (toPlayer)
+        {
+            pEffects.Add(effect);
+            pCritMod += effect.crit;
+            pBTHMod += effect.bth;
+            pDefenseMod += effect.defense;
+            pBoost *= effect.boost;
+            
+            for (int i = 0; i < effect.resistances.Count; i++)
+            {
+                for (int j = 0; j < pResistancesMod.Count; j++)
+                {
+                    if (pResistancesMod[j].name == effect.resistances[i].name)
+                    {
+                        Armour.Resistance res = new Armour.Resistance(pResistancesMod[j].name, pResistancesMod[j].value + effect.resistances[i].value);
+                        pResistancesMod[j] = res;
+                    }
+                }
+            }
+
+        }
+        else
+        {
+            eEffects.Add(effect);
+            eCritMod += effect.crit;
+            eBTHMod += effect.bth;
+            eDefenseMod += effect.defense;
+            eBoost *= effect.boost;
+
+            for (int i = 0; i < effect.resistances.Count; i++)
+            {
+                for (int j = 0; j < eResistancesMod.Count; j++)
+                {
+                    if (eResistancesMod[j].name == effect.resistances[i].name)
+                    {
+                        Armour.Resistance res = new Armour.Resistance(eResistancesMod[j].name, eResistancesMod[j].value + effect.resistances[i].value);
+                        eResistancesMod[j] = res;
+                    }
+                }
+            }
+        }
+        player.GetComponent<InventoryManager>().pEffects = pEffects;
+        player.GetComponent<InventoryManager>().eEffects = eEffects;
+    }
+
+    void updateEffects()
+    {
+        for (int i = 0; i < pEffects.Count; i++)
+        {
+            StatusEffect effect = pEffects[i];
+
+            effect.turns = effect.turns - 1;
+            pEffects[i] = effect;
+
+            if (effect.turns == 0)
+            {
+                pEffects.Remove(effect);
+                pCritMod -= effect.crit;
+                pBTHMod -= effect.bth;
+                pDefenseMod -= effect.defense;
+                pBoost /= effect.boost;
+
+                for (int j = 0; j < effect.resistances.Count; j++)
+                {
+                    for (int k = 0; k < pResistancesMod.Count; k++)
+                    {
+                        if (pResistancesMod[k].name == effect.resistances[j].name)
+                        {
+                            Armour.Resistance res = new Armour.Resistance(pResistancesMod[k].name, pResistancesMod[k].value - effect.resistances[j].value);
+                            pResistancesMod[k] = res;
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < eEffects.Count; i++)
+        {
+            StatusEffect effect = eEffects[i];
+
+            effect.turns = effect.turns - 1;
+            eEffects[i] = effect;
+
+            if (effect.turns == 0)
+            {
+                eEffects.Remove(effect);
+                eCritMod -= effect.crit;
+                eBTHMod -= effect.bth;
+                eDefenseMod -= effect.defense;
+                eBoost /= effect.boost;
+
+                for (int j = 0; j < effect.resistances.Count; j++)
+                {
+                    for (int k = 0; k < eResistancesMod.Count; k++)
+                    {
+                        if (eResistancesMod[k].name == effect.resistances[j].name)
+                        {
+                            Armour.Resistance res = new Armour.Resistance(eResistancesMod[k].name, eResistancesMod[k].value - effect.resistances[j].value);
+                            eResistancesMod[k] = res;
+                        }
+                    }
+                }
+            }
+        }
+        player.GetComponent<InventoryManager>().pEffects = pEffects;
+        player.GetComponent<InventoryManager>().eEffects = eEffects;
+    }
+
 }
 
 public class DamageInstance
@@ -499,4 +727,5 @@ public class DamageInstance
     public bool critical;
     public int value;
     public string element;
+    public bool miss;
 }

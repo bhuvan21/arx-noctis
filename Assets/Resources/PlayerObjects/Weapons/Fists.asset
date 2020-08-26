@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: weapon
   displayType: Fists
+  price: 0
   sellback: 0
+  sellable: 0
   displayName: Fists
   level: 1
   description: What more information do you need? They're fists, pretty plain.
@@ -56,4 +58,4 @@ MonoBehaviour:
   dual: 1
   path: 
   rotation: 0
-  element: 
+  element: nature

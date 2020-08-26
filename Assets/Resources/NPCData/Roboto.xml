@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <NPC name= "Roboto">
  <Menu level="1">
-  <Line>Ay my g what is up! It's been a while since I saw you, [playerName].</Line>
+  <Line>Heya! It's been a while since I saw you, [playerName].</Line>
   <Button text="Talk">
    <Line>
     Hey there! I'm a test NPC. Hopefully, you're reading this right now.
@@ -59,6 +59,10 @@
     <Quest text="Go!" resource="testQuest"></Quest>
    </Menu>
   </Button>
+  <Button text = "Shop">
+    <Shop resource="RobotoShop"></Shop>
+  </Button>
+   
   <Button text="Heal">
    <Heal></Heal>
   </Button>
