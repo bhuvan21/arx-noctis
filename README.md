@@ -17,6 +17,8 @@ This game is written using Unity, and is currently playable online via Unity Web
 - [X] Elemental Resistances/Weaknesses
 - [X] Stat System affecting battle
 - [X] Critical Hits/Misses
+- [X] Bonus to Hit and Defense!
+- [X] Status effects!!!
 
 ### Overall Done!
 ------
@@ -30,6 +32,7 @@ This game is written using Unity, and is currently playable online via Unity Web
 - [X] Proper Player 2D Lighting
 - [X] Player and Enemy Info Viewer
 - [X] Shops
+- [X] Music System (basic)
 
 
 
@@ -40,7 +43,6 @@ This game is written using Unity, and is currently playable online via Unity Web
 - [ ] Currency  
 - [ ] Level Ups  
 - [ ] Stat Training  
-- [ ] Some Music  
 - [ ] Home Town  
 - [ ] Save Equips and Classes  
 - [ ] Visually customiseable characters - better selections, more features and body types  
