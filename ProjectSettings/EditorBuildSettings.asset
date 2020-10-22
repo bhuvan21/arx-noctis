@@ -35,4 +35,22 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Joe1.unity
     guid: 46f89e063c963cf4e8ad241c9120b17c
+  - enabled: 1
+    path: Assets/Scenes/AlterorInnMain.unity
+    guid: f1a8ab7ce1fd86d43a74950689f1d2ef
+  - enabled: 1
+    path: Assets/Scenes/AlterorInnBack.unity
+    guid: 90cfe7a544961ce4f857eaa5f0412c3f
+  - enabled: 1
+    path: Assets/Scenes/AlterorInnLanding.unity
+    guid: 5417f889539a8ef40b4a4db334f16d62
+  - enabled: 1
+    path: Assets/Scenes/AlterorInnUp.unity
+    guid: 6857c9b3bdcc06f4dad7a59901ad750b
+  - enabled: 1
+    path: Assets/Scenes/AlterorInnUpright.unity
+    guid: a66520414e0aa744393d3ecbf0c84903
+  - enabled: 1
+    path: Assets/Scenes/AlterorInnDining.unity
+    guid: f23e1f37f9a1571478989ea262901635
   m_configObjects: {}

@@ -73,6 +73,8 @@ public class CoreCharacterController : MonoBehaviour
     public GameObject head;
     public GameObject skeleton;
 
+    public bool hoveringDetail = false;
+
     private void Start()
     {   
         currentClass = (BattleClass)Resources.Load("PlayerObjects/Classes/" + "Ruffian/Ruffian");
@@ -221,6 +223,19 @@ public class CoreCharacterController : MonoBehaviour
         // i have no idea what this does but it's movement related!
         if (mouseDown && canMove && !EventSystem.current.IsPointerOverGameObject())
         {
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            foreach (RaycastHit hit in Physics.RaycastAll(ray))
+            {
+                print(hit.collider.gameObject);
+            }
+            print("clicked");
+
+            if (hoveringDetail)
+            {
+                return;
+            }
+
             unstickMovement = true;
             movePercentage = 0.000001f;
             movingFrom = transform.position;
@@ -258,10 +273,12 @@ public class CoreCharacterController : MonoBehaviour
     // handles the player hitting nps/location swaps
     void OnTriggerEnter2D(Collider2D col)
     {
+        //print("UH benyas 1");
         if (exitingBattle && col.gameObject.GetComponent<Enemy>() != null)
         {
             Destroy(col.gameObject);
             exitingBattle = false;
+
             return;
         }
         if (col.gameObject.GetComponent<InteractionManager>() != null)
@@ -285,6 +302,16 @@ public class CoreCharacterController : MonoBehaviour
                 button.GetComponent<Button>().onClick.AddListener(() => EndQuest(col));
                 button.GetComponent<Button>().onClick.AddListener(() => Destroy(scroll));
                 button.GetComponent<Button>().onClick.AddListener(() => Destroy(button));
+                movePercentage = 1;
+                movingFrom = transform.position;
+            }
+            else if (col.gameObject.GetComponent<InteractionManager>().interactionType == "detail") {
+                GameObject myPrefab = Resources.Load("Prefabs/notification", typeof(GameObject)) as GameObject;
+                GameObject scroll = Instantiate(myPrefab, new Vector3(0, 2.5f, 0), Quaternion.identity);
+                scroll.transform.Find("Description").GetComponent<TextMeshPro>().text = col.gameObject.GetComponent<InteractionManager>().sceneName;
+                scroll.transform.Find("Description").GetComponent<Renderer>().sortingLayerName = "Popups";
+                scroll.transform.Find("Description").GetComponent<Renderer>().sortingOrder = 1000;
+                Destroy(scroll, 5.0f);
             }
             else
             {
@@ -296,6 +323,8 @@ public class CoreCharacterController : MonoBehaviour
                 {
                     canMove = false;
                 }
+                movePercentage = 1;
+                movingFrom = transform.position;
             }
         }
         else if (col.gameObject.GetComponent<Enemy>() != null && inBattle == false)
@@ -305,21 +334,31 @@ public class CoreCharacterController : MonoBehaviour
 
             IEnumerator coroutine = LoadBattle();
             StartCoroutine(coroutine);
+
+            movePercentage = 1;
+            movingFrom = transform.position;
+
         }
-        movePercentage = 1;
-        movingFrom = transform.position;
+        
     }
 
     // small things
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        movePercentage = 1;
-        movingFrom = transform.position;
-        unstickMovement = false;
+        //print("UH benyas 2");
+        //print(collision.collider.isTrigger == false);
+        if (collision.collider.isTrigger == false)
+        {
+            movePercentage = 1;
+            movingFrom = transform.position;
+            unstickMovement = false;
+        }
+        
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
+        //print("UH benyas 3");
         if (unstickMovement == false)
         {
             movePercentage = 1;
@@ -329,8 +368,13 @@ public class CoreCharacterController : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        movePercentage = 1;
-        movingFrom = transform.position;
+        if (collision.isTrigger == false)
+        {
+            //print("UH benyas 4");
+            movePercentage = 1;
+            movingFrom = transform.position;
+        }
+        
     }
 
     public void EndBattle(string placeID)

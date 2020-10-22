@@ -12,6 +12,8 @@ public class SpeechboxManager : MonoBehaviour
 
     private static SpeechboxManager speechboxInstance;
 
+    GameObject oldAlert;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -72,6 +74,20 @@ public class SpeechboxManager : MonoBehaviour
             boxes.RemoveAt(0);
         }
     }
+
+    public void CreateNotification(string msg)
+    {
+        Destroy(oldAlert);
+        GameObject myPrefab = Resources.Load("Prefabs/notification", typeof(GameObject)) as GameObject;
+        GameObject scroll = Instantiate(myPrefab, new Vector3(0, 2.5f, 0), Quaternion.identity);
+        scroll.transform.Find("Description").GetComponent<TextMeshPro>().text = msg;
+        scroll.transform.Find("Description").GetComponent<Renderer>().sortingLayerName = "Popups";
+        scroll.transform.Find("Description").GetComponent<Renderer>().sortingOrder = 1000;
+        oldAlert = scroll;
+        Destroy(scroll, 5.0f);
+    }
+
+    
 
     
 

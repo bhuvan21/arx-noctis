@@ -13,7 +13,7 @@ public class StatusEffect : ScriptableObject
     public int crit;
     public int bth;
     public int defense;
-    public int boost;
+    public float boost;
 
     public List<Armour.Resistance> resistances;
 

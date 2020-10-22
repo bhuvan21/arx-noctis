@@ -70,8 +70,8 @@ public class BattleManager : MonoBehaviour
     int eBTHMod = 0;
     int eDefenseMod = 0;
 
-    int pBoost = 1;
-    int eBoost = 1;
+    float pBoost = 1;
+    float eBoost = 1;
 
     List<StatusEffect> pEffects = new List<StatusEffect>();
     List<StatusEffect> eEffects = new List<StatusEffect>();
@@ -448,7 +448,7 @@ public class BattleManager : MonoBehaviour
         int defense;
         int crit;
         int bth;
-        int boost;
+        float boost;
         List<Armour.Resistance> mods;
 
         if (isPlayer)
