@@ -33,6 +33,7 @@ This game is written using Unity, and is currently playable online via Unity Web
 - [X] Player and Enemy Info Viewer
 - [X] Shops
 - [X] Music System (basic)
+- [X] Interactive World Objects
 
 
 
