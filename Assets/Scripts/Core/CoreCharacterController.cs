@@ -223,14 +223,6 @@ public class CoreCharacterController : MonoBehaviour
         // i have no idea what this does but it's movement related!
         if (mouseDown && canMove && !EventSystem.current.IsPointerOverGameObject())
         {
-
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            foreach (RaycastHit hit in Physics.RaycastAll(ray))
-            {
-                print(hit.collider.gameObject);
-            }
-            print("clicked");
-
             if (hoveringDetail)
             {
                 return;

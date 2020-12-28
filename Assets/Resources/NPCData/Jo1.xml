@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<NPC name= "Jo">
+ <Menu level="1">
+  <Line>Hold on . . . You're not a rock!</Line>
+  <Button text="Rocks?">
+   <Line>Yes - rocks!</Line>
+   <Line>I LOVE rocks! Here's jimmy, rocky, stoney, limey, sandy, and the rest I haven't named yet.</Line>
+    <Menu level="2">
+      <Line>Hm?</Line>
+      <Button text="Where do you get your rocks from?">
+        <Line>Ooh! Glad you asked.</Line>
+        <Line>I love mining rocks from here, but my most precious rocks are from all over. Friends and travellers bring them to me and I keep them as reminders of the world out there.</Line>
+        <Return back="1"></Return>
+      </Button>
+      <Button text="Floating rocks?">
+        <Line>Yeah they are! Imbued them with a little magic and now they float around me.</Line>
+        <Line>Pretty cool huh?</Line>
+        <Return back="1"></Return>
+      </Button>
+      
+      <Button text="Do you ever get bored of rocks?">
+        <Line>??? No ???</Line>
+        <Return back="1"></Return>
+      </Button>
+      <Button text="Back">
+        <Return back="2"></Return>
+      </Button>
+    </Menu>
+    
+  </Button>
+   <Button text="Mining?">
+     <Line>I run the mine here - most important part of Alteror.</Line>
+     <Line>Down that hole there, leads to the mines. Thousands of tunnels stretching as far as the eye can see.</Line>
+     <Line>Which is not that far underground since it's pretty dark.</Line>
+     <Line>This mine right here, is what Alteror is known for, all across the kingdom.</Line>
+     <Return back="1"></Return>
+   </Button>
+   
+   <Button text="Who's Jo?">
+     <Line>Jomama . . . can you tell I wrote this when I was tired?</Line>
+     <Return back="1"></Return>
+   </Button>
+  
+  <Button text="Heal">
+   <Heal></Heal>
+  </Button>
+  <Button text="Exit">
+   <Exit></Exit>
+  </Button>
+ </Menu>
+</NPC>

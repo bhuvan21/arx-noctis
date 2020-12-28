@@ -30,27 +30,66 @@ EditorBuildSettings:
     path: Assets/Scenes/CreateAccount.unity
     guid: 0cf602769d7a340e69caaa77ccbaf5db
   - enabled: 1
-    path: Assets/Scenes/AlterorInn1.unity
+    path: Assets/Scenes/Inn/AlterorInn1.unity
     guid: d3529265ae985be4093fcb4f989073ef
   - enabled: 1
     path: Assets/Scenes/Joe1.unity
     guid: 46f89e063c963cf4e8ad241c9120b17c
   - enabled: 1
-    path: Assets/Scenes/AlterorInnMain.unity
+    path: Assets/Scenes/Inn/AlterorInnMain.unity
     guid: f1a8ab7ce1fd86d43a74950689f1d2ef
   - enabled: 1
-    path: Assets/Scenes/AlterorInnBack.unity
+    path: Assets/Scenes/Inn/AlterorInnBack.unity
     guid: 90cfe7a544961ce4f857eaa5f0412c3f
   - enabled: 1
-    path: Assets/Scenes/AlterorInnLanding.unity
+    path: Assets/Scenes/Inn/AlterorInnLanding.unity
     guid: 5417f889539a8ef40b4a4db334f16d62
   - enabled: 1
-    path: Assets/Scenes/AlterorInnUp.unity
+    path: Assets/Scenes/Inn/AlterorInnUp.unity
     guid: 6857c9b3bdcc06f4dad7a59901ad750b
   - enabled: 1
-    path: Assets/Scenes/AlterorInnUpright.unity
+    path: Assets/Scenes/Inn/AlterorInnUpright.unity
     guid: a66520414e0aa744393d3ecbf0c84903
   - enabled: 1
-    path: Assets/Scenes/AlterorInnDining.unity
+    path: Assets/Scenes/Inn/AlterorInnDining.unity
     guid: f23e1f37f9a1571478989ea262901635
+  - enabled: 1
+    path: Assets/Scenes/Upleft.unity
+    guid: 396afd006acbaca43b2e2c7a34cd51b3
+  - enabled: 1
+    path: Assets/Scenes/Upright.unity
+    guid: d2cbea5668c439b448910b510770f10d
+  - enabled: 1
+    path: Assets/Scenes/Forge Steps.unity
+    guid: dcac37e0b511ff54aacc83cc724ae153
+  - enabled: 1
+    path: Assets/Scenes/Temple Stump.unity
+    guid: 5a0f8e6f4fbd6f642945987117bf0808
+  - enabled: 1
+    path: Assets/Scenes/Downleft.unity
+    guid: e0bd1cdd66db60c49b39abca44453706
+  - enabled: 1
+    path: Assets/Scenes/Downright.unity
+    guid: 033d652318888014db8ccbc1d5928872
+  - enabled: 1
+    path: Assets/Scenes/Halfway.unity
+    guid: ab26bc23e4ea14a40b8e62e0ab6c2158
+  - enabled: 1
+    path: Assets/Scenes/Cave/CaveLead.unity
+    guid: afaf620cf72892e47be79a322f5b0ccf
+  - enabled: 1
+    path: Assets/Scenes/Cave/CaveCenter.unity
+    guid: c1892cb7924917741890edc7a7a5c2ae
+  - enabled: 1
+    path: Assets/Scenes/Cave/CaveLead1.unity
+    guid: 8ba451238282b9745b42812241723ac2
+  - enabled: 1
+    path: Assets/Scenes/Cave/CaveLead2.unity
+    guid: 044d383ff70248f4aa022286eb3ab807
+  - enabled: 1
+    path: Assets/Scenes/Cave/CaveLead3.unity
+    guid: 6acaaae57556f984298cc1afe98155dd
+  - enabled: 1
+    path: Assets/Scenes/Cave/Jo1.unity
+    guid: 4d6948c09a9d40c40aadbf1662734043
   m_configObjects: {}
