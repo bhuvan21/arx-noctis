@@ -97,7 +97,7 @@ public class InventoryManager : MonoBehaviour
 
         setDefaultWeapon((Weapon)Resources.Load("PlayerObjects/Weapons/Fists"));
         addItem((Weapon)Resources.Load("PlayerObjects/Weapons/RustyDagger"));
-        //addItem((Weapon)Resources.Load("PlayerObjects/Weapons/WeirdBone"));
+
         equipWeapon(defaultWeapon);
         fullHeal();
         closeInventory();
@@ -355,14 +355,15 @@ public class InventoryManager : MonoBehaviour
             RHWeaponGameobject = Instantiate(myPrefab, new Vector3(0, 0, 0), myPrefab.transform.rotation);
             RHWeaponGameobject.transform.parent = RHWeaponSlot.transform;
             RHWeaponGameobject.transform.localPosition = new Vector3(0, 0, 0);
-
+            
             Vector3 newScale = new Vector3(transform.localScale.x, Mathf.Abs(transform.localScale.y), transform.localScale.z);
             RHWeaponGameobject.transform.localScale = Vector3.Scale(Vector3.Scale(RHWeaponGameobject.transform.localScale, newScale), new Vector3(3.3f, 3.3f, 3.3f));
-            if (transform.localScale.x < 0)
-            {
-                RHWeaponGameobject.transform.localScale = new Vector3(RHWeaponGameobject.transform.localScale.x, RHWeaponGameobject.transform.localScale.y * -1, RHWeaponGameobject.transform.localScale.z);
-            }
+
             RHWeaponGameobject.GetComponent<SpriteRenderer>().sortingOrder = 6;
+            RHWeaponGameobject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            Debug.Log("WE HERE BRUH");
+            Debug.Log(RHWeaponGameobject.transform.rotation.eulerAngles);
+            
 
             if (weapon.dual)
             {
@@ -377,7 +378,10 @@ public class InventoryManager : MonoBehaviour
                 }
                 
                 LHWeaponGameobject.GetComponent<SpriteRenderer>().sortingOrder = -1;
+                LHWeaponGameobject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
             }
+            Debug.Log(RHWeaponGameobject.transform.rotation.eulerAngles);
+            Debug.Log("is!!");
         }
 
     }

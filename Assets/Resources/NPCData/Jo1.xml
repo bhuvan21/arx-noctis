@@ -37,8 +37,12 @@
    </Button>
    
    <Button text="Who's Jo?">
-     <Line>Jomama . . . can you tell I wrote this when I was tired?</Line>
+     <Line>Jomama.</Line>
      <Return back="1"></Return>
+   </Button>
+
+   <Button text = "Free Rocks!">
+     <Shop resource="JoRocks"></Shop>
    </Button>
   
   <Button text="Heal">

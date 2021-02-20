@@ -15,7 +15,9 @@ MonoBehaviour:
   className: Ruffian
   attacks:
   - {fileID: 11400000, guid: f17bde42191c9439eb3f3127c964f809, type: 2}
-  - {fileID: 11400000, guid: d6a799d0fdfee4cc6ad1268315573600, type: 2}
   - {fileID: 11400000, guid: ccde56513da5a62458a83a6502fcafb2, type: 2}
+  - {fileID: 11400000, guid: d6a799d0fdfee4cc6ad1268315573600, type: 2}
   - {fileID: 11400000, guid: e7c7877e06f7c9a458de600235602f2f, type: 2}
   - {fileID: 11400000, guid: a0ea5c6f7a5fec84889c02239ed35e3f, type: 2}
+  - {fileID: 11400000, guid: 7469c2bd6e234e043b93fd947e761048, type: 2}
+  - {fileID: 11400000, guid: 658db3fdb718fd34f8e7b0da6617f21e, type: 2}

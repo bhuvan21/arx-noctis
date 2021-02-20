@@ -20,3 +20,8 @@ MonoBehaviour:
   mana: 0
   animName: player_punch
   desc: 100% Damage
+  myEffects: []
+  theirEffects: []
+  battleIcon: Punch
+  longDesc: Standard filler punch - two hits of 50% damage with no cooldown and mana
+    cost.

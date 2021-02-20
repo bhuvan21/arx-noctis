@@ -20,3 +20,7 @@ MonoBehaviour:
   mana: 10
   animName: RuffianL7
   desc: Vicious kick, 125% Dmg
+  myEffects: []
+  theirEffects: []
+  battleIcon: SmallKick
+  longDesc: A small kick hitting for 125% damage, with a low cooldown and mana cost.

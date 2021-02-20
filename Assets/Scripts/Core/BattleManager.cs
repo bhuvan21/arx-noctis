@@ -76,6 +76,8 @@ public class BattleManager : MonoBehaviour
     List<StatusEffect> pEffects = new List<StatusEffect>();
     List<StatusEffect> eEffects = new List<StatusEffect>();
 
+    Color cooldownColor = Color.blue;
+
 
     public List<Armour.Resistance> pResistancesMod = new List<Armour.Resistance>
     {
@@ -173,11 +175,13 @@ public class BattleManager : MonoBehaviour
 
         oldScale = player.transform.localScale;
         player.transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
-        BattleClass playerClass = player.GetComponent<CoreCharacterController>().currentClass;
+
+        List<Attack> playerAttacks = player.GetComponent<SkillManager>().selectedSkills;
 
         // update the attack buttons for the player's class
         for (int i = 0; i < attackButtons.Count; i++)
         {
+            print(i);
             GameObject button = attackButtons[i];
             button.GetComponent<Image>().color = Color.gray;
             
@@ -185,38 +189,54 @@ public class BattleManager : MonoBehaviour
             button.gameObject.transform.Find("Label").gameObject.SetActive(false);
             button.gameObject.transform.Find("Mana").gameObject.SetActive(false);
             button.gameObject.transform.Find("Cooldown").gameObject.SetActive(false);
+            button.gameObject.transform.Find("Image").gameObject.SetActive(false);
+
         }
 
+        
         // make the buttons actually work, and have them appear right for cooldowns etc
-        for (int i = 0; i < playerClass.attacks.Length; i++)
+        for (int i = 0; i < playerAttacks.Count; i++)
         {
-            if (playerClass.attacks[i].placement != 0)
+            print(i);
+            print(playerAttacks.Count);
+            if (playerAttacks[i].placement != 0)
             {
-                GameObject button = attackButtons[playerClass.attacks[i].placement + 7];
-                if (playerClass.attacks[i].placement > 0)
+                print(playerAttacks[i].placement);
+                GameObject button;
+                if (playerAttacks[i].placement > 0)
                 {
-                    button = attackButtons[playerClass.attacks[i].placement + 6];
+                    button = attackButtons[playerAttacks[i].placement + 6];
                 }
+                else
+                {
+                    button = attackButtons[playerAttacks[i].placement + 7];
+                }
+               
+                
                 GameObject text = button.gameObject.transform.Find("Label").gameObject;
-                text.GetComponent<Text>().text = playerClass.attacks[i].name;
+                text.GetComponent<Text>().text = playerAttacks[i].name;
                 text.SetActive(true);
                 button.gameObject.transform.Find("Mana").gameObject.SetActive(true);
-                button.gameObject.transform.Find("Mana").GetComponent<Text>().text = playerClass.attacks[i].mana.ToString();
-                button.GetComponent<AttackButtonPreview>().attackName = playerClass.attacks[i].name;
-                button.GetComponent<AttackButtonPreview>().attackDesc = playerClass.attacks[i].desc;
-                if (playerClass.attacks[i].startingCooldown > 0)
+                button.gameObject.transform.Find("Mana").GetComponent<Text>().text = playerAttacks[i].mana.ToString();
+                button.GetComponent<AttackButtonPreview>().attackName = playerAttacks[i].name;
+                button.GetComponent<AttackButtonPreview>().attackDesc = playerAttacks[i].desc;
+                button.gameObject.transform.Find("Image").gameObject.SetActive(true);
+
+
+                button.gameObject.transform.Find("Image").gameObject.GetComponent<Image>().sprite = Sprite.Create(Resources.Load("Icons/" + playerAttacks[i].battleIcon) as Texture2D, new Rect(0, 0, 100, 100), new Vector2(0, 0));
+                if (playerAttacks[i].startingCooldown > 0)
                 {
-                    button.GetComponent<Image>().color = Color.green;
-                    if (playerClass.attacks[i].placement > 0)
+                    button.GetComponent<Image>().color = cooldownColor;
+                    if (playerAttacks[i].placement > 0)
                     {
-                        cooldowns[playerClass.attacks[i].placement + 6] = playerClass.attacks[i].startingCooldown;
+                        cooldowns[playerAttacks[i].placement + 6] = playerAttacks[i].startingCooldown;
                     }
                     else
                     {
-                        cooldowns[playerClass.attacks[i].placement + 7] = playerClass.attacks[i].startingCooldown;
+                        cooldowns[playerAttacks[i].placement + 7] = playerAttacks[i].startingCooldown;
                     }
                     button.gameObject.transform.Find("Cooldown").gameObject.SetActive(true);
-                    button.gameObject.transform.Find("Cooldown").GetComponent<Text>().text = playerClass.attacks[i].startingCooldown.ToString();
+                    button.gameObject.transform.Find("Cooldown").GetComponent<Text>().text = playerAttacks[i].startingCooldown.ToString();
                 }
                 else
                 {
@@ -226,8 +246,12 @@ public class BattleManager : MonoBehaviour
             }
             else
             {
-                buttonAttack0.GetComponent<AttackButtonPreview>().attackName = playerClass.attacks[i].name;
-                buttonAttack0.GetComponent<AttackButtonPreview>().attackDesc = playerClass.attacks[i].desc;
+                print(i);
+                print(playerAttacks.Count);
+                buttonAttack0.gameObject.transform.Find("Image").gameObject.GetComponent<Image>().sprite = Sprite.Create(Resources.Load("Icons/" + playerAttacks[i].battleIcon) as Texture2D, new Rect(0, 0, 100, 100), new Vector2(0, 0));
+                buttonAttack0.gameObject.transform.Find("Text").gameObject.GetComponent<Text>().text = playerAttacks[i].name;
+                buttonAttack0.GetComponent<AttackButtonPreview>().attackName = playerAttacks[i].name;
+                buttonAttack0.GetComponent<AttackButtonPreview>().attackDesc = playerAttacks[i].desc;
             }
         }
     }
@@ -235,21 +259,23 @@ public class BattleManager : MonoBehaviour
     // the small funcs that let battle flow
     public void PlayerMovedToAttack()
     {
+        print("YUHYUH");
+        print(playerAttack.animName);
         player.GetComponent<CoreCharacterController>().AnimateAttack(playerAttack.animName);
     }
 
     public void PlayerMovedFromAttack()
     {
 
-        Attack[] attacks = enemy.GetComponent<Enemy>().currentClass.attacks;
-        enemyAttack = attacks[Random.Range(0, attacks.Length - 1)];
+        List<Attack> attacks = enemy.GetComponent<Enemy>().currentClass.attacks;
+        enemyAttack = attacks[Random.Range(0, attacks.Count - 1)];
         enemy.GetComponent<Enemy>().MoveToAttack();
         //EnemyMovedToAttack();
     }
 
     public void EnemyMovedToAttack()
     {
-        enemy.GetComponent<Enemy>().AnimateAttack(Random.Range(0, enemy.GetComponent<Enemy>().currentClass.attacks.Length - 1));
+        enemy.GetComponent<Enemy>().AnimateAttack(Random.Range(0, enemy.GetComponent<Enemy>().currentClass.attacks.Count - 1));
     }
 
     // run at the end of each turn
@@ -290,22 +316,40 @@ public class BattleManager : MonoBehaviour
                 button = attackButtons[playerAttack.placement + 7];
             }
             button.gameObject.transform.Find("Cooldown").gameObject.SetActive(true);
-            button.gameObject.transform.Find("Cooldown").GetComponent<Text>().text =playerAttack.cooldown.ToString();
-            button.GetComponent<Image>().color = Color.green;
+            button.gameObject.transform.Find("Cooldown").GetComponent<Text>().text = playerAttack.cooldown.ToString();
+            button.GetComponent<Image>().color = cooldownColor;
         }
         updateEffects();
-        ShowButtons();
+        
     }
 
     public void ButtonAttackPressed(int attackPlacement)
     {
-        Attack[] attacks = player.GetComponent<CoreCharacterController>().currentClass.attacks;
-
-        for (int i = 0; i < attacks.Length; i++)
+        List<Attack> attacks = player.GetComponent<SkillManager>().selectedSkills;
+        
+        for (int i = 0; i < attacks.Count; i++)
         {
             Attack attack = attacks[i];
             if (attack.placement == attackPlacement)
             {
+                if (attackPlacement != 0)
+                {
+                    int realAttackPlacement = 0;
+                    if (attackPlacement < 0)
+                    {
+                        realAttackPlacement = attackPlacement + 7;
+                    }
+                    else
+                    {
+                        realAttackPlacement = attackPlacement + 6;
+                    }
+                    if (attackButtons[realAttackPlacement].transform.Find("Cooldown").gameObject.activeSelf)
+                    {
+                        return;
+                    }
+                }
+                
+
                 if (player.GetComponent<InventoryManager>().currentMana >= attack.mana)
                 {
                     HideButtons();
@@ -313,6 +357,11 @@ public class BattleManager : MonoBehaviour
                     for(int k = 0; k < attack.myEffects.Count; k++)
                     {
                         applyEffect(attack.myEffects[k], true);
+                    }
+
+                    for (int k = 0; k < attack.theirEffects.Count; k++)
+                    {
+                        applyEffect(attack.theirEffects[k], false);
                     }
 
                     playerAttack = attack;
@@ -323,6 +372,36 @@ public class BattleManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    bool checkEnemyDead(GameObject e)
+    {
+        if (e.GetComponent<Enemy>().currentHealth <= 0)
+        {
+            e.GetComponent<Enemy>().currentHealth = 0;
+            e.GetComponent<Enemy>().isDead = true;
+            hackyHide(enemyHealthBar);
+            hackyHide(enemyManaBar);
+            hackyHide(enemyName);
+            hackyHide(enemyInfo);
+            return true;
+        }
+        return false;
+    }
+
+    bool checkPlayerDead(GameObject p)
+    {
+        if (p.GetComponent<InventoryManager>().currentHealth <= 0)
+        {
+            p.GetComponent<InventoryManager>().currentHealth = 0;
+
+            hackyHide(enemyHealthBar);
+            hackyHide(enemyManaBar);
+            hackyHide(enemyName);
+            hackyHide(enemyInfo);
+            return true;
+        }
+        return false;
     }
 
     // where the player damage happens
@@ -340,15 +419,7 @@ public class BattleManager : MonoBehaviour
 
             enemy.GetComponent<Enemy>().currentHealth = Mathf.Min(enemy.GetComponent<Enemy>().currentHealth - dmg.value, enemy.GetComponent<Enemy>().maxHealth);
 
-            if (enemy.GetComponent<Enemy>().currentHealth <= 0)
-            {
-                enemy.GetComponent<Enemy>().currentHealth = 0;
-                enemy.GetComponent<Enemy>().isDead = true;
-                hackyHide(enemyHealthBar);
-                hackyHide(enemyManaBar);
-                hackyHide(enemyName);
-                hackyHide(enemyInfo);
-            }
+            checkEnemyDead(enemy);
             UpdatePointBars();
         }
         
@@ -437,7 +508,7 @@ public class BattleManager : MonoBehaviour
     }
 
 
-    public DamageInstance CalculateDamage (int statMax, Weapon weapon, Attack attack, bool isPlayer, List<Armour.Resistance> res)
+    public DamageInstance CalculateDamage (int statMax, Weapon weapon, Attack attack, bool isPlayer, List<Armour.Resistance> res, bool isDot=false)
     {
         DamageInstance dmg = new DamageInstance();
 
@@ -480,40 +551,47 @@ public class BattleManager : MonoBehaviour
         float modified = baseDamage * attack.multiplier * boost;
         print("Hit+Boost DMG:" + modified.ToString());
 
-        // Check if miss
-        int missRoll = Random.Range(0, 100);
-        print("Defense: " + missRoll.ToString() + "/" + defense.ToString());
-        if (missRoll <= defense - bth)
-        {
-            modified = modified * 0;
-            dmg.miss = true;
-        }
-        print("Miss DMG:" + modified.ToString());
         // Apply power modifier
         modified = modified * (1.0f + ((float)power / (float)statMax * 2.0f));
         print("Power DMG:" + modified.ToString());
 
-        dmg.critical = false;
-        dmg.element = weapon.element;
-
-        // Check if critical, and apply crit modifier
-        int criticalRoll = Random.Range(0, 100);
-        if (criticalRoll <= crit)
+        if (isDot == false)
         {
-            float criticalModifier = (((float)power / 200.0f) * 1.75f) + 1.75f;
-            modified = modified * criticalModifier;
-            dmg.critical = true;
-        }
-        print("Critical DMG:" + modified.ToString());
-        // Apply resistances
-        foreach (Armour.Resistance resist in addResistances(res, mods))
-        {
-            if (resist.name == weapon.element && resist.value != 0)
+            // Check if miss
+            int missRoll = Random.Range(0, 100);
+            print("Defense: " + missRoll.ToString() + "/" + defense.ToString());
+            if (missRoll <= defense - bth)
             {
-                modified = modified * (1.0f - ((float)resist.value / 100.0f));
+                modified = modified * 0;
+                dmg.miss = true;
             }
+            print("Miss DMG:" + modified.ToString());
+
+            dmg.critical = false;
+            dmg.element = weapon.element;
+
+            // Check if critical, and apply crit modifier
+            int criticalRoll = Random.Range(0, 100);
+            if (criticalRoll <= crit)
+            {
+                float criticalModifier = (((float)power / 200.0f) * 1.75f) + 1.75f;
+                modified = modified * criticalModifier;
+                dmg.critical = true;
+            }
+
+            print("Critical DMG:" + modified.ToString());
+            // Apply resistances
+            foreach (Armour.Resistance resist in addResistances(res, mods))
+            {
+                if (resist.name == weapon.element && resist.value != 0)
+                {
+                    modified = modified * (1.0f - ((float)resist.value / 100.0f));
+                }
+            }
+            print("Resisted DMG:" + modified.ToString());
         }
-        print("Resisted DMG:" + modified.ToString());
+        
+        
         int final = Mathf.CeilToInt(modified);
         dmg.value = final;
         return dmg;
@@ -665,12 +743,24 @@ public class BattleManager : MonoBehaviour
 
     void updateEffects()
     {
+        List<Attack> pDots = new List<Attack>();
+        List<Attack> eDots = new List<Attack>();
+        List<StatusEffect> pEffs = new List<StatusEffect>();
+        List<StatusEffect> eEffs = new List<StatusEffect>();
+
         for (int i = 0; i < pEffects.Count; i++)
         {
             StatusEffect effect = pEffects[i];
 
             effect.turns = effect.turns - 1;
             pEffects[i] = effect;
+
+            if (effect.dot != null)
+            {
+                pDots.Add(effect.dot);
+                pEffects.Add(effect);
+            }
+
             print("TURNS OK!!: " + effect.turns.ToString());
             if (effect.turns == 0)
             {
@@ -701,6 +791,12 @@ public class BattleManager : MonoBehaviour
             effect.turns = effect.turns - 1;
             eEffects[i] = effect;
 
+            if (effect.dot != null)
+            {
+                eDots.Add(effect.dot);
+                eEffs.Add(effect);
+            }
+
             if (effect.turns == 0)
             {
                 eEffects.Remove(effect);
@@ -724,6 +820,62 @@ public class BattleManager : MonoBehaviour
         }
         player.GetComponent<InventoryManager>().pEffects = pEffects;
         player.GetComponent<InventoryManager>().eEffects = eEffects;
+
+        StartCoroutine(hitDots(0.25f, pDots, eDots, pEffs, eEffs));
+
+
+    }
+
+    IEnumerator hitDots(float secs, List<Attack> pDots, List<Attack> eDots, List<StatusEffect> pEffs, List<StatusEffect> eEffs)
+    {
+        foreach (Attack a in pDots)
+        {
+            
+            DamageInstance dmg = CalculateDamage(player.GetComponent<CoreCharacterController>().statMaximum,
+                enemy.GetComponent<Enemy>().currentWeapon, a, false, new List<Armour.Resistance>(),
+                true);
+            dmg.element = pEffs[pDots.IndexOf(a)].element;
+
+            CreateDamageIndicator(dmg.value, true, false, false);
+
+            player.GetComponent<InventoryManager>().currentHealth = Mathf.Min(player.GetComponent<InventoryManager>().currentHealth - dmg.value, player.GetComponent<InventoryManager>().maxHealth);
+
+            bool pded = checkPlayerDead(player);
+            UpdatePointBars();
+            if (pded)
+            {
+                yield break;
+            }
+
+            yield return new WaitForSeconds(secs);
+        }
+
+        foreach (Attack a in eDots)
+        {
+            DamageInstance dmg = CalculateDamage(player.GetComponent<CoreCharacterController>().statMaximum,
+                player.GetComponent<InventoryManager>().currentWeapon, a, false, new List<Armour.Resistance>(),
+                true);
+            dmg.element = eEffs[eDots.IndexOf(a)].element;
+
+            CreateDamageIndicator(dmg.value, true, false, false);
+
+            print("ENEMY HEALTH");
+            print(enemy.GetComponent<Enemy>().currentHealth);
+            enemy.GetComponent<Enemy>().currentHealth = Mathf.Min(enemy.GetComponent<Enemy>().currentHealth - dmg.value, enemy.GetComponent<Enemy>().maxHealth);
+            UpdatePointBars();
+            print(enemy.GetComponent<Enemy>().currentHealth);
+            bool eded = checkEnemyDead(enemy);
+
+
+            if (eded)
+            {
+                yield break;
+            }
+
+            yield return new WaitForSeconds(secs);
+        }
+        ShowButtons();
+        yield break;
     }
 
 }

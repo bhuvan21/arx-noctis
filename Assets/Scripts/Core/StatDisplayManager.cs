@@ -93,6 +93,7 @@ public class StatDisplayManager : MonoBehaviour
             }
             formatted += stat.ToString();
             addStats.GetComponent<Text>().text += formatted + "\n";
+            
         }
 
         HP.GetComponent<Text>().text = "HP : " + this.gameObject.GetComponent<InventoryManager>().currentHealth.ToString() + "/" + this.gameObject.GetComponent<InventoryManager>().maxHealth.ToString();

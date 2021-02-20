@@ -17,4 +17,8 @@ public class Attack : ScriptableObject
     public string desc;
     public List<StatusEffect> myEffects;
     public List<StatusEffect> theirEffects;
+
+    public string battleIcon;
+    public string longDesc;
+
 }

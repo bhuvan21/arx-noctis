@@ -23,3 +23,5 @@ MonoBehaviour:
   myEffects:
   - {fileID: 11400000, guid: 988c85ec28e223945b1b3db8606232d7, type: 2}
   theirEffects: []
+  battleIcon: Brace
+  longDesc: A simple ruffian's brace - applies "Braced", +65 defense for 2 turns.

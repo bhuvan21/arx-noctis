@@ -19,7 +19,8 @@ public class NPC : MonoBehaviour
 
     int currentLevel;
 
-    Vector3 speechPos;
+    public Vector3 speechPos;
+
 
     bool prevPressed = true;
     bool newPressed = false;
@@ -29,8 +30,7 @@ public class NPC : MonoBehaviour
     {
         player = GameObject.Find("BonePlayer");
         Speech = GameObject.Find("SpeechboxManager").GetComponent<SpeechboxManager>();
-        Vector3 pos = gameObject.transform.position;
-        speechPos = new Vector3(pos.x - 7, pos.y+1.25f, pos.z);
+
 
         TextAsset txtAsset = Resources.Load("NPCData/" + filename) as TextAsset;
         XmlDocument xmlDoc = new XmlDocument();

@@ -20,3 +20,8 @@ MonoBehaviour:
   mana: 20
   animName: RuffianL1
   desc: Big Kick, Big Cost
+  myEffects: []
+  theirEffects: []
+  battleIcon: JumpKick
+  longDesc: A big jump kick, hitting for 200% damage, though with a larger cooldown
+    and mana cost!

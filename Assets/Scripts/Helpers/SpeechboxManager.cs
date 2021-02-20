@@ -43,22 +43,37 @@ public class SpeechboxManager : MonoBehaviour
     {
         GameObject myPrefab = Resources.Load("Prefabs/Speechbox", typeof(GameObject)) as GameObject;
         GameObject box = Instantiate(myPrefab, pos, Quaternion.identity);
+        Vector3 boxScale = box.gameObject.transform.localScale;
+        box.gameObject.transform.localScale = new Vector3(scale, scale, 1);
         boxes.Add(box);
+        int scaleFactor = 1;
+        
+        
+
         if (!right)
         {
-            Vector3 boxScale = box.gameObject.transform.localScale;
-            box.gameObject.transform.localScale = new Vector3(scale, scale, 1);
-            GameObject hook = box.transform.Find("boxhook").gameObject;
-            Vector3 lscale = hook.gameObject.transform.localScale;
-            hook.transform.localScale = new Vector3(lscale.x * -1, lscale.y, lscale.z);
-            hook.transform.localPosition = new Vector3(2.439f, 0.29f, 0.0f);
-            GameObject nameGO = box.transform.Find("BoxName").gameObject;
-            GameObject speechGO = box.transform.Find("BoxText").gameObject;
-            nameGO.GetComponent<MeshRenderer>().sortingLayerName = "UI";
-            speechGO.GetComponent<MeshRenderer>().sortingLayerName = "UI";
-            nameGO.GetComponent<TextMesh>().text = name;
-            speechGO.GetComponent<TextMeshPro>().text = text;
+            scaleFactor = -1;
         }
+
+        GameObject hook = box.transform.Find("boxhook").gameObject;
+        Vector3 hookPos = hook.transform.localPosition;
+        Vector3 lscale = hook.gameObject.transform.localScale;
+        hook.transform.localScale = new Vector3(lscale.x * scaleFactor, lscale.y, lscale.z);
+
+        if (!right)
+        {
+            scaleFactor = -1;
+            hookPos = new Vector3(2.439f, 0.29f, 0.0f);
+        }
+
+        hook.transform.localPosition = hookPos;
+        GameObject nameGO = box.transform.Find("BoxName").gameObject;
+        GameObject speechGO = box.transform.Find("BoxText").gameObject;
+        nameGO.GetComponent<MeshRenderer>().sortingLayerName = "UI";
+        speechGO.GetComponent<MeshRenderer>().sortingLayerName = "UI";
+        nameGO.GetComponent<TextMesh>().text = name;
+        speechGO.GetComponent<TextMeshPro>().text = text;
+
         if (boxes.Count == count + 1)
         {
             Destroy(boxes[0]);

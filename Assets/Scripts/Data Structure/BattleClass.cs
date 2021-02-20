@@ -8,6 +8,6 @@ using System;
 public class BattleClass : ScriptableObject
 {
     public string className;
-    public Attack[] attacks;
+    public List<Attack> attacks;
 
 }

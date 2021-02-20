@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc2a33c2256e4097adfd2fadb8bf166, type: 3}
   m_Name: Ruffian2
   m_EditorClassIdentifier: 
-  name: War Cry
+  name: Adrenaline
   placement: 2
   multiplier: 0.8
   startingCooldown: 0
@@ -23,3 +23,6 @@ MonoBehaviour:
   myEffects:
   - {fileID: 11400000, guid: 83c271aa47fd7d44ea54d4b8c852e262, type: 2}
   theirEffects: []
+  battleIcon: Adrenaline
+  longDesc: Adrenaline surges through your veins! Attacks for 80% damage and applies
+    "Pumped" for 3 turns, a 30% damage boost!

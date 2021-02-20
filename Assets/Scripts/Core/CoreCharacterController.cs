@@ -75,10 +75,12 @@ public class CoreCharacterController : MonoBehaviour
 
     public bool hoveringDetail = false;
 
+    
+
     private void Start()
     {   
         currentClass = (BattleClass)Resources.Load("PlayerObjects/Classes/" + "Ruffian/Ruffian");
-        //this.gameObject.GetComponent<ShadowCaster2D>().
+        
     }
 
     // prevents duplicates of the player

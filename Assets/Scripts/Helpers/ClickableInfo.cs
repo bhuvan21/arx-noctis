@@ -15,7 +15,7 @@ public class ClickableInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        tex = LoadPNG("Assets/click7.png");
+        tex = LoadPNG("Assets/Sprites/Clicks/click7.png");
         manager = GameObject.Find("SpeechboxManager");
     }
 
@@ -27,21 +27,23 @@ public class ClickableInfo : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        print("enter");
-        GameObject.Find("BonePlayer").GetComponent<CoreCharacterController>().hoveringDetail = true;
-        Cursor.SetCursor(tex, Vector2.zero, CursorMode.Auto);
+        if (GameObject.Find("BonePlayer").GetComponent<SkillManager>().open == false)
+        {
+            GameObject.Find("BonePlayer").GetComponent<CoreCharacterController>().hoveringDetail = true;
+            Cursor.SetCursor(tex, Vector2.zero, CursorMode.Auto);
+        }
+       
     }
 
     private void OnMouseExit()
     {
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-        print("exit");
         GameObject.Find("BonePlayer").GetComponent<CoreCharacterController>().hoveringDetail = false;
     }
 
     private void OnMouseOver()
     {
-        //print("enter");
+        
         GameObject.Find("BonePlayer").GetComponent<CoreCharacterController>().hoveringDetail = true;
 
     }

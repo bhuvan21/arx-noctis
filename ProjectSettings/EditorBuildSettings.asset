@@ -33,7 +33,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Inn/AlterorInn1.unity
     guid: d3529265ae985be4093fcb4f989073ef
   - enabled: 1
-    path: Assets/Scenes/Joe1.unity
+    path: Assets/Scenes/Inn/Joe1.unity
     guid: 46f89e063c963cf4e8ad241c9120b17c
   - enabled: 1
     path: Assets/Scenes/Inn/AlterorInnMain.unity

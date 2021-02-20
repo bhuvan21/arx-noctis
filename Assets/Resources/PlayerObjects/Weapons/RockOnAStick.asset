@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a511e6e63703b462cb2cd34d65621124, type: 3}
+  m_Name: RockOnAStick
+  m_EditorClassIdentifier: 
+  type: weapon
+  displayType: Club
+  price: 0
+  sellback: 0
+  sellable: 1
+  displayName: Rock On A Stick
+  level: 1
+  description: It's a rock on a stick! Expertly crafted by Jo from Alteror.
+  equipType: weapon
+  stats:
+  - name: power
+    value: 3
+  - name: immunity
+    value: 0
+  - name: endurance
+    value: 0
+  - name: wisdom
+    value: 1
+  - name: luck
+    value: 0
+  - name: recovery
+    value: 0
+  resistances:
+  - name: fire
+    value: 0
+  - name: water
+    value: 0
+  - name: darkness
+    value: 0
+  - name: light
+    value: 0
+  - name: wind
+    value: 0
+  - name: stone
+    value: 5
+  - name: ice
+    value: 0
+  - name: nature
+    value: 5
+  - name: metal
+    value: 0
+  minimum: 3
+  maximum: 15
+  dual: 0
+  path: Prefabs/rock on a stick
+  rotation: -40
+  element: stone

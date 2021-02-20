@@ -18,4 +18,6 @@ public class StatusEffect : ScriptableObject
     public List<Armour.Resistance> resistances;
 
     public bool self;
+    public Attack dot;
+    public string element;
 }
